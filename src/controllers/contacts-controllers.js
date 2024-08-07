@@ -1,28 +1,36 @@
 import createHttpError from 'http-errors';
 import {
-  getContacts,
-  getContactById,
-  addContact,
-  upsertContact,
-  deleteContact,
+  getWater,
+  getWaterById,
+  addWater,
+  upsertWater,
+  deleteWater,
 } from '../services/contact-services.js';
 import parsePaginationParams from '../utils/parsePaginationParams.js';
 import parseSortParams from '../utils/parseSortParams.js';
 import parseContactsFilterParams from '../utils/parseContactsFilterParams.js';
-import saveFileToPublicDir from '../utils/saveFileToPublicDir.js';
-import saveFileToCloudinary from '../utils/saveFileToCloudinary.js';
-import { env } from '../utils/env.js';
-const enable_cloudinary = env('ENABLE_CLOUDINARY');
+// import saveFileToPublicDir from '../utils/saveFileToPublicDir.js';
+// import saveFileToCloudinary from '../utils/saveFileToCloudinary.js';
+// import { env } from '../utils/env.js';
+// const enable_cloudinary = env('ENABLE_CLOUDINARY');
 
-export const getAllContactsController = async (req, res, next) => {
+export const getAllWaterController = async (req, res, next) => {
   const { _id: userId } = req.user;
-  const { page, perPage } = parsePaginationParams(req.query);
+  const { month } = req.query;
+  const { page: parsedPage, perPage: parsedPerPage } = parsePaginationParams({
+    month,
+  });
   const { sortBy, sortOrder } = parseSortParams(req.query);
-  const filter = { ...parseContactsFilterParams(req.query), userId };
+  const filter = {
+    ...parseContactsFilterParams({
+      month,
+    }),
+    userId,
+  };
 
-  const data = await getContacts({
-    page,
-    perPage,
+  const data = await getWater({
+    page: parsedPage,
+    perPage: parsedPerPage,
     sortBy,
     sortOrder,
     filter,
@@ -34,57 +42,71 @@ export const getAllContactsController = async (req, res, next) => {
   });
 };
 
-export const getContactByIdController = async (req, res, next) => {
+export const getWaterByIdController = async (req, res, next) => {
   const { id } = req.params;
   const { _id: userId } = req.user;
-  const data = await getContactById({ _id: id, userId });
+  const data = await getWaterById({ _id: id, userId });
   console.log({ id, userId });
   if (!data) {
-    throw createHttpError(404, `Contact with id ${id} not found`);
+    throw createHttpError(
+      404,
+      `Information about used water with id ${id} not found`,
+    );
   }
   res.json({
     status: 200,
-    message: `Successfully found contact with id ${id}`,
+    message: `Successfully found information about used with id ${id}`,
     data,
   });
 };
 
-export const addContactController = async (req, res) => {
+export const addWaterController = async (req, res) => {
   const { _id: userId } = req.user;
 
-  let photo = '';
-  if (req.file) {
-    if (enable_cloudinary === 'true') {
-      photo = await saveFileToCloudinary(req.file, 'photo');
-    } else {
-      photo = await saveFileToPublicDir(req.file, 'photo');
-    }
-  }
+  // let photo = '';
+  // if (req.file) {
+  //   if (enable_cloudinary === 'true') {
+  //     photo = await saveFileToCloudinary(req.file, 'photo');
+  //   } else {
+  //     photo = await saveFileToPublicDir(req.file, 'photo');
+  //   }
+  // }
 
-  const data = await addContact({ ...req.body, userId, photo });
+  const data = await addWater({
+    ...req.body,
+    userId,
+    // photo
+  });
   res.status(201).json({
     status: 201,
-    message: 'Successfully created a contact!',
+    message: 'Successfully added info about used water!',
     data,
   });
 };
 
-export const putContactController = async (req, res) => {
+export const putWaterController = async (req, res) => {
   const { id } = req.params;
   const { _id: userId } = req.user;
-  let photo = '';
-  if (req.file) {
-    if (enable_cloudinary === 'true') {
-      photo = await saveFileToCloudinary(req.file, 'photo');
-    } else {
-      photo = await saveFileToPublicDir(req.file, 'photo');
-    }
-  }
-  const data = await upsertContact({ _id: id, userId }, req.body, photo, {
-    upsert: true,
-  });
+  // let photo = '';
+  // if (req.file) {
+  //   if (enable_cloudinary === 'true') {
+  //     photo = await saveFileToCloudinary(req.file, 'photo');
+  //   } else {
+  //     photo = await saveFileToPublicDir(req.file, 'photo');
+  //   }
+  // }
+  const data = await upsertWater(
+    { _id: id, userId },
+    req.body,
+    // photo,
+    {
+      upsert: true,
+    },
+  );
   const status = data.isNew ? 201 : 200;
-  const message = data.isNew ? 'Successfully added Contact' : 'Contact updated';
+  const message = data.isNew
+    ? 'Successfully added information about used water'
+    : 'Information about used water updated';
   res.json({
     status,
     message,
@@ -92,25 +114,29 @@ export const putContactController = async (req, res) => {
   });
 };
 
-export const patchContactController = async (req, res) => {
+export const patchWaterController = async (req, res) => {
   const { id } = req.params;
   const { _id: userId } = req.user;
-  let photo = '';
-  if (req.file) {
-    if (enable_cloudinary === 'true') {
-      photo = await saveFileToCloudinary(req.file, 'photo');
-    } else {
-      photo = await saveFileToPublicDir(req.file, 'photo');
-    }
-  }
-  const data = await upsertContact({ _id: id, userId }, req.body, photo);
+  // let photo = '';
+  // if (req.file) {
+  //   if (enable_cloudinary === 'true') {
+  //     photo = await saveFileToCloudinary(req.file, 'photo');
+  //   } else {
+  //     photo = await saveFileToPublicDir(req.file, 'photo');
+  //   }
+  // }
+  const data = await upsertWater(
+    { _id: id, userId },
+    req.body,
+    // photo
+  );
 
   if (!data) {
-    throw createHttpError(404, 'Contact not found');
+    throw createHttpError(404, 'Information about used water not found');
   }
   res.json({
     status: 200,
-    message: 'Successfully patched a contact!',
+    message: 'Successfully updated information about used water!',
     data: data.result.value,
   });
 };
@@ -118,10 +144,10 @@ export const patchContactController = async (req, res) => {
 export const deleteController = async (req, res) => {
   const { id } = req.params;
   const { _id: userId } = req.user;
-  const data = await deleteContact({ _id: id, userId });
+  const data = await deleteWater({ _id: id, userId });
 
   if (!data) {
-    throw createHttpError(404, 'Contact not found');
+    throw createHttpError(404, 'Information not found');
   }
 
   res.status(204).end();

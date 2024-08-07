@@ -1,8 +1,8 @@
 import { sortByConstants, sortOrderConstants } from '../constants/constants.js';
-import Contact from '../db/models/Contacts.js';
+import Water from '../db/models/Water.js';
 import calcPaginationData from '../utils/calcPaginationData.js';
 
-export const getContacts = async ({
+export const getWater = async ({
   page,
   perPage,
   sortBy = sortByConstants[0],
@@ -11,17 +11,13 @@ export const getContacts = async ({
 }) => {
   const skip = (page - 1) * perPage;
 
-  const databaseQuery = Contact.find();
+  const databaseQuery = Water.find();
 
-  if (filter.userId) {
-    databaseQuery.where('userId').equals(filter.userId);
-  }
-  if (filter.type) {
-    databaseQuery.where('contactType').equals(filter.type);
-  }
-
-  if (filter.isFavourite) {
-    databaseQuery.where('isFavourite').equals(filter.isFavourite);
+  // if (filter.userId) {
+  //   databaseQuery.where('userId').equals(filter.userId);
+  // }
+  if (filter.month) {
+    databaseQuery.where('month').equals(filter.month);
   }
 
   const items = await databaseQuery
@@ -29,7 +25,7 @@ export const getContacts = async ({
     .limit(perPage)
     .sort({ [sortBy]: sortOrder });
 
-  const totalItems = await Contact.find().merge(databaseQuery).countDocuments();
+  const totalItems = await Water.find().merge(databaseQuery).countDocuments();
 
   const { totalPages, hasNextPage, hasPreviousPage } = calcPaginationData(
     totalItems,
@@ -48,15 +44,20 @@ export const getContacts = async ({
   };
 };
 
-export const getContactById = (filter) => Contact.findOne(filter);
+export const getWaterById = (filter) => Water.findOne(filter);
 
-export const addContact = (data) => Contact.create(data);
+export const addWater = (data) => Water.create(data);
 
-export const upsertContact = async (filter, data, photo, options = {}) => {
-  if (photo) {
-    data.photo = photo;
-  }
-  const result = await Contact.findOneAndUpdate(filter, data, {
+export const upsertWater = async (
+  filter,
+  data,
+  options = {},
+  // photo,
+) => {
+  // if (photo) {
+  //   data.photo = photo;
+  // }
+  const result = await Water.findOneAndUpdate(filter, data, {
     new: true,
     runValidators: true,
     includeResultMetadata: true,
@@ -71,4 +72,4 @@ export const upsertContact = async (filter, data, photo, options = {}) => {
   };
 };
 
-export const deleteContact = (filter) => Contact.findOneAndDelete(filter);
+export const deleteWater = (filter) => Water.findOneAndDelete(filter);
