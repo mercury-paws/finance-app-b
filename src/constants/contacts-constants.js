@@ -13,6 +13,16 @@ export const monthList = [
   'December',
 ];
 
+function generateYears() {
+  const years = [];
+  for (let year = 2000; year <= 3000; year += 1) {
+    years.push(year);
+  }
+  return years;
+}
+
+export const yearList = generateYears();
+
 export const timeRegexp = /^(?:[01]\d|2[0-3]):[0-5]\d$/;
 export const mlRegexp = /^(?:[0-9]|[1-9][0-9]{0,2}|1000)$/;
 

@@ -1,4 +1,5 @@
 import { monthList } from '../constants/contacts-constants.js';
+import { yearList } from '../constants/contacts-constants.js';
 
 // const parseBoolean = (value) => {
 //   if (typeof value !== 'string') return;
@@ -6,10 +7,12 @@ import { monthList } from '../constants/contacts-constants.js';
 //   return value === 'true';
 // };
 
-const parseContactsFilterParams = ({ month }) => {
+const parseContactsFilterParams = ({ month, year }) => {
   const parsedType = monthList.includes(month) ? month : null;
+  const parsedYear = yearList.includes(year) ? year : null;
   return {
     month: parsedType,
+    year: parsedYear,
   };
 };
 

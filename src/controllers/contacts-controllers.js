@@ -16,7 +16,7 @@ import parseContactsFilterParams from '../utils/parseContactsFilterParams.js';
 
 export const getAllWaterController = async (req, res, next) => {
   const { _id: userId } = req.user;
-  const { month } = req.query;
+  const { month, year } = req.query;
   const { page: parsedPage, perPage: parsedPerPage } = parsePaginationParams({
     month,
   });
@@ -24,6 +24,7 @@ export const getAllWaterController = async (req, res, next) => {
   const filter = {
     ...parseContactsFilterParams({
       month,
+      year,
     }),
     userId,
   };
@@ -37,7 +38,7 @@ export const getAllWaterController = async (req, res, next) => {
   });
   res.json({
     status: 200,
-    message: 'Successfully found contacts',
+    message: 'Successfully found used water',
     data,
   });
 };

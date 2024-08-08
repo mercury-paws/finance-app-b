@@ -1,6 +1,7 @@
 import { Schema, model } from 'mongoose';
 import {
   monthList,
+  yearList,
   timeRegexp,
   mlRegexp,
   getMaxDaysInMonth,
@@ -34,7 +35,15 @@ const waterSchema = new Schema(
         message: '{VALUE} is not supported',
       },
     },
-
+    year: {
+      type: String,
+      required: [true, 'Year is required'],
+      unique: false,
+      enum: {
+        values: yearList,
+        message: '{VALUE} is not supported',
+      },
+    },
     time: {
       type: String,
       required: [true, 'Time is required'],

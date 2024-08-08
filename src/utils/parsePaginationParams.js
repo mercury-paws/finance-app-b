@@ -1,7 +1,7 @@
 import {
   getMaxDaysInMonth,
   getNumberOfMonth,
-} from '../constants/contacts-constants';
+} from '../constants/contacts-constants.js';
 
 const parsedNumber = (value, defaultValue) => {
   if (typeof value !== 'string') {
@@ -17,6 +17,7 @@ const parsedNumber = (value, defaultValue) => {
 const parsePaginationParams = ({ month }) => {
   const parsedPage = parsedNumber(getNumberOfMonth(month));
   const parsedPerPage = parsedNumber(getMaxDaysInMonth(month));
+
   return {
     page: parsedPage,
     perPage: parsedPerPage,
