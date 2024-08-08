@@ -9,6 +9,7 @@ import {
 import parsePaginationParams from '../utils/parsePaginationParams.js';
 import parseSortParams from '../utils/parseSortParams.js';
 import parseContactsFilterParams from '../utils/parseContactsFilterParams.js';
+import { monthList, yearList } from '../constants/contacts-constants.js';
 // import saveFileToPublicDir from '../utils/saveFileToPublicDir.js';
 // import saveFileToCloudinary from '../utils/saveFileToCloudinary.js';
 // import { env } from '../utils/env.js';
@@ -17,18 +18,31 @@ import parseContactsFilterParams from '../utils/parseContactsFilterParams.js';
 export const getAllWaterController = async (req, res, next) => {
   const { _id: userId } = req.user;
   const { month, year } = req.query;
+  console.log(month, year);
+
+  if (!monthList.includes(month)) {
+    return res
+      .status(400)
+      .json({ status: 400, message: 'Invalid month parameter' });
+  }
+  if (!yearList.includes(parseInt(year, 10))) {
+    return res
+      .status(400)
+      .json({ status: 400, message: 'Invalid year parameter' });
+  }
+
   const { page: parsedPage, perPage: parsedPerPage } = parsePaginationParams({
     month,
   });
+
   const { sortBy, sortOrder } = parseSortParams(req.query);
   const filter = {
-    ...parseContactsFilterParams({
-      month,
-      year,
-    }),
+    ...parseContactsFilterParams(req.query),
     userId,
   };
+  console.log(userId);
 
+  console.log('Filter:', filter);
   const data = await getWater({
     page: parsedPage,
     perPage: parsedPerPage,
@@ -75,6 +89,7 @@ export const addWaterController = async (req, res) => {
 
   const data = await addWater({
     ...req.body,
+    ...req.query,
     userId,
     // photo
   });
@@ -99,6 +114,7 @@ export const putWaterController = async (req, res) => {
   const data = await upsertWater(
     { _id: id, userId },
     req.body,
+    req.query,
     // photo,
     {
       upsert: true,
@@ -129,6 +145,7 @@ export const patchWaterController = async (req, res) => {
   const data = await upsertWater(
     { _id: id, userId },
     req.body,
+    req.query,
     // photo
   );
 

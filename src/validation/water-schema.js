@@ -7,9 +7,8 @@ export const waterAddSchema = Joi.object({
     'any.required': 'ml is required',
   }),
   time: Joi.string().pattern(timeRegexp).required().messages({
-    'string.pattern.base':
-      'Email should be of the following format: name@example.com',
-    'any.required': 'Email is required',
+    'string.pattern.base': 'Time should be of the following format: xx:xx',
+    'any.required': 'Time is required',
   }),
 });
 
@@ -19,8 +18,7 @@ export const waterUpdateSchema = Joi.object({
     'any.required': 'ml is required',
   }),
   time: Joi.string().pattern(timeRegexp).required().messages({
-    'string.pattern.base':
-      'Email should be of the following format: name@example.com',
-    'any.required': 'Email is required',
+    'string.pattern.base': 'Time should be of the following format: xx:xx',
+    'any.required': 'Time is required',
   }),
 });
