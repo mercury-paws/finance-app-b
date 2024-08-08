@@ -18,7 +18,6 @@ import { monthList, yearList } from '../constants/contacts-constants.js';
 export const getAllWaterController = async (req, res, next) => {
   const { _id: userId } = req.user;
   const { month, year } = req.query;
-  console.log(month, year);
 
   if (!monthList.includes(month)) {
     return res
@@ -40,9 +39,7 @@ export const getAllWaterController = async (req, res, next) => {
     ...parseContactsFilterParams(req.query),
     userId,
   };
-  console.log(userId);
 
-  console.log('Filter:', filter);
   const data = await getWater({
     page: parsedPage,
     perPage: parsedPerPage,
@@ -168,5 +165,8 @@ export const deleteController = async (req, res) => {
     throw createHttpError(404, 'Information not found');
   }
 
-  res.status(204).end();
+  res.json({
+    status: 204,
+    message: 'Successfully deleted information about used water!',
+  });
 };

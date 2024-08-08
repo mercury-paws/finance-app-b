@@ -12,15 +12,15 @@ export const getWater = async ({
 }) => {
   const databaseQuery = Water.find();
 
-  if (filter.userId) {
-    databaseQuery.where('userId').equals(filter.userId);
-  }
-
   if (filter.month) {
     databaseQuery.where('month').equals(filter.month);
   }
   if (filter.year) {
     databaseQuery.where('year').equals(filter.year);
+  }
+
+  if (filter.userId) {
+    databaseQuery.where('userId').equals(filter.userId);
   }
 
   const items = await databaseQuery.sort({ [sortBy]: sortOrder });
