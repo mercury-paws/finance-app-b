@@ -2,14 +2,21 @@ import createHttpError from 'http-errors';
 import {
   getWater,
   getWaterById,
+  getWaterDay,
   addWater,
   upsertWater,
   deleteWater,
 } from '../services/contact-services.js';
 import parsePaginationParams from '../utils/parsePaginationParams.js';
-import parseSortParams from '../utils/parseSortParams.js';
+// import parseSortParams from '../utils/parseSortParams.js';
 import parseContactsFilterParams from '../utils/parseContactsFilterParams.js';
 import { monthList, yearList } from '../constants/contacts-constants.js';
+import {
+  getMaxDaysInMonth,
+  getNumberOfMonth,
+} from '../constants/contacts-constants.js';
+import { sortByConstants, sortOrderConstants } from '../constants/constants.js';
+import Water from '../db/models/Water.js';
 // import saveFileToPublicDir from '../utils/saveFileToPublicDir.js';
 // import saveFileToCloudinary from '../utils/saveFileToCloudinary.js';
 // import { env } from '../utils/env.js';
@@ -30,11 +37,13 @@ export const getAllWaterController = async (req, res, next) => {
       .json({ status: 400, message: 'Invalid year parameter' });
   }
 
+  const sortBy = sortByConstants[2];
+  const sortOrder = sortOrderConstants[0];
+
   const { page: parsedPage, perPage: parsedPerPage } = parsePaginationParams({
     month,
   });
 
-  const { sortBy, sortOrder } = parseSortParams(req.query);
   const filter = {
     ...parseContactsFilterParams(req.query),
     userId,
@@ -72,8 +81,73 @@ export const getWaterByIdController = async (req, res, next) => {
   });
 };
 
+export const getWaterByDayController = async (req, res) => {
+  const { _id: userId } = req.user;
+  const { day, month, year } = req.query;
+  console.log('day', day, 'month', month, 'year', year);
+
+  if (getMaxDaysInMonth(month) < day) {
+    return res
+      .status(400)
+      .json({ status: 400, message: 'Invalid day parameter' });
+  }
+  if (!monthList.includes(month)) {
+    return res
+      .status(400)
+      .json({ status: 400, message: 'Invalid month parameter' });
+  }
+  if (!yearList.includes(parseInt(year, 10))) {
+    return res
+      .status(400)
+      .json({ status: 400, message: 'Invalid year parameter' });
+  }
+
+  const sortBy = sortByConstants[2];
+  const sortOrder = sortOrderConstants[0];
+
+  const filter = {
+    ...parseContactsFilterParams(req.query),
+    userId,
+  };
+
+  const data = await getWaterDay({
+    sortBy,
+    sortOrder,
+    filter,
+  });
+
+  res.json({
+    status: 200,
+    message: `Successfully found used water for the ${day}`,
+    data,
+  });
+};
+
 export const addWaterController = async (req, res) => {
   const { _id: userId } = req.user;
+  const { day, year, month } = req.query;
+  const { ml, time } = req.body;
+  if (getMaxDaysInMonth(month) < day) {
+    return res
+      .status(400)
+      .json({ status: 400, message: 'Invalid day parameter' });
+  }
+
+  if (!monthList.includes(month)) {
+    return res
+      .status(400)
+      .json({ status: 400, message: 'Invalid month parameter' });
+  }
+  if (!yearList.includes(parseInt(year, 10))) {
+    return res
+      .status(400)
+      .json({ status: 400, message: 'Invalid year parameter' });
+  }
+  const monthNumber = getNumberOfMonth(month);
+  const paddedDay = String(day).padStart(2, '0');
+  const paddedMonth = String(monthNumber).padStart(2, '0');
+  const fullTime = new Date(`${year}-${paddedMonth}-${paddedDay}T${time}:00Z`);
+  const timestamp = fullTime.getTime();
 
   // let photo = '';
   // if (req.file) {
@@ -85,11 +159,18 @@ export const addWaterController = async (req, res) => {
   // }
 
   const data = await addWater({
-    ...req.body,
-    ...req.query,
+    ml,
+    time,
+    fullTime,
+    timestamp,
+    day,
+    year,
+    month,
+    monthNumber,
     userId,
     // photo
   });
+
   res.status(201).json({
     status: 201,
     message: 'Successfully added info about used water!',
@@ -131,6 +212,8 @@ export const putWaterController = async (req, res) => {
 export const patchWaterController = async (req, res) => {
   const { id } = req.params;
   const { _id: userId } = req.user;
+  const { time } = req.body;
+
   // let photo = '';
   // if (req.file) {
   //   if (enable_cloudinary === 'true') {
@@ -139,11 +222,25 @@ export const patchWaterController = async (req, res) => {
   //     photo = await saveFileToPublicDir(req.file, 'photo');
   //   }
   // }
+
+  const currentWaterData = await Water.findOne({ _id: id, userId });
+  let { fullTime } = currentWaterData;
+
+  const datePart = fullTime.toISOString().split('T')[0];
+  const newFullTime = new Date(`${datePart}T${time}:00.000Z`);
+
+  const timestamp = newFullTime.getTime();
+
+  const updatedData = {
+    ...req.body,
+    fullTime: newFullTime,
+    timestamp,
+  };
+
   const data = await upsertWater(
     { _id: id, userId },
-    req.body,
-    req.query,
-    // photo
+    updatedData,
+    //photo
   );
 
   if (!data) {

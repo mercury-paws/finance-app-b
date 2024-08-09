@@ -10,6 +10,11 @@ import { mongooseSaveError, setUpdateSettings } from './hooks.js';
 
 const waterSchema = new Schema(
   {
+    ml: {
+      type: String,
+      required: true,
+      validate: mlRegexp,
+    },
     day: {
       type: String,
       min: [1, 'Must be at least 1, got {VALUE}'],
@@ -35,6 +40,13 @@ const waterSchema = new Schema(
         message: '{VALUE} is not supported',
       },
     },
+    monthNumber: {
+      type: String,
+      min: [1, 'Must be at least 1, got {VALUE}'],
+      max: [12, 'Must be at most 12, got {VALUE}'],
+      required: [true, 'Month is required'],
+      unique: false,
+    },
     year: {
       type: String,
       required: [true, 'Year is required'],
@@ -49,11 +61,23 @@ const waterSchema = new Schema(
       required: [true, 'Time is required'],
       validate: timeRegexp,
     },
-
-    ml: {
+    fullTime: {
+      type: Date,
+      required: [true, 'Time ISO is required'],
+      validate: {
+        validator: function (value) {
+          // ISO 8601 format validation
+          const iso8601Regex =
+            /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{3})?([+-]\d{2}:\d{2}|Z)$/;
+          return iso8601Regex.test(value.toISOString());
+        },
+        message: 'Event date must be in ISO 8601 format (YYYY-MM-DDTHH:MM:SSZ)',
+      },
+      unique: true,
+    },
+    timestamp: {
       type: String,
       required: true,
-      validate: mlRegexp,
     },
     userId: {
       type: Schema.Types.ObjectId,

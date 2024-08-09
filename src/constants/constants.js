@@ -1,2 +1,2 @@
 export const sortOrderConstants = ['asc'];
-export const sortByConstants = ['day'];
+export const sortByConstants = ['day', 'time', 'timestamp'];

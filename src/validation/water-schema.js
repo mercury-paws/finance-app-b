@@ -8,7 +8,7 @@ export const waterAddSchema = Joi.object({
   }),
   time: Joi.string().pattern(timeRegexp).required().messages({
     'string.pattern.base': 'Time should be of the following format: xx:xx',
-    'any.required': 'Time is required',
+    'any.required': 'Time xx:xx is required',
   }),
 });
 
@@ -19,6 +19,6 @@ export const waterUpdateSchema = Joi.object({
   }),
   time: Joi.string().pattern(timeRegexp).required().messages({
     'string.pattern.base': 'Time should be of the following format: xx:xx',
-    'any.required': 'Time is required',
+    'any.required': 'Time xx:xx required',
   }),
 });

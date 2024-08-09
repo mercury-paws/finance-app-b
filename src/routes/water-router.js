@@ -6,6 +6,7 @@ import {
   putWaterController,
   patchWaterController,
   deleteController,
+  getWaterByDayController,
 } from '../controllers/contacts-controllers.js';
 import ctrlWrapper from '../utils/ctrlWrapper.js';
 import isValidId from '../middlewares/isValidId.js';
@@ -22,6 +23,8 @@ const waterRouter = Router();
 waterRouter.use(authenticate);
 waterRouter.get('/', ctrlWrapper(getAllWaterController));
 waterRouter.get('/:id', isValidId, ctrlWrapper(getWaterByIdController));
+
+waterRouter.get('/', isValidId, ctrlWrapper(getWaterByDayController));
 
 waterRouter.post(
   '/add',

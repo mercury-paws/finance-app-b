@@ -1,4 +1,3 @@
-import { sortByConstants, sortOrderConstants } from '../constants/constants.js';
 // import createHttpError from 'http-errors';
 import Water from '../db/models/Water.js';
 import calcPaginationData from '../utils/calcPaginationData.js';
@@ -6,8 +5,8 @@ import calcPaginationData from '../utils/calcPaginationData.js';
 export const getWater = async ({
   page,
   perPage,
-  sortBy = sortByConstants[0],
-  sortOrder = sortOrderConstants[0],
+  sortBy,
+  sortOrder,
   filter,
 }) => {
   const databaseQuery = Water.find();
@@ -41,6 +40,36 @@ export const getWater = async ({
     totalPages,
     hasPreviousPage,
     hasNextPage,
+  };
+};
+
+export const getWaterDay = async ({ sortBy, sortOrder, filter }) => {
+  const databaseQuery = Water.find();
+
+  if (filter.day) {
+    databaseQuery.where('day').equals(filter.day);
+  }
+  if (filter.month) {
+    databaseQuery.where('month').equals(filter.month);
+  }
+  if (filter.year) {
+    databaseQuery.where('year').equals(filter.year);
+  }
+
+  if (filter.userId) {
+    databaseQuery.where('userId').equals(filter.userId);
+  }
+
+  const items = await databaseQuery.sort({ [sortBy]: sortOrder });
+
+  const totalItems = await Water.find().merge(databaseQuery).countDocuments();
+
+  const { totalPages } = calcPaginationData(totalItems);
+
+  return {
+    items,
+    totalItems,
+    totalPages,
   };
 };
 
