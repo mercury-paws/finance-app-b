@@ -22,9 +22,10 @@ const waterRouter = Router();
 
 waterRouter.use(authenticate);
 waterRouter.get('/', ctrlWrapper(getAllWaterController));
-waterRouter.get('/:id', isValidId, ctrlWrapper(getWaterByIdController));
 
-waterRouter.get('/', isValidId, ctrlWrapper(getWaterByDayController));
+waterRouter.get('/day', ctrlWrapper(getWaterByDayController));
+
+waterRouter.get('/:id', isValidId, ctrlWrapper(getWaterByIdController));
 
 waterRouter.post(
   '/add',
