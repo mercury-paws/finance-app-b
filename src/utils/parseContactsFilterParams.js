@@ -7,28 +7,6 @@ import { getMaxDaysInMonth } from '../constants/contacts-constants.js';
 //   return value === 'true';
 // };
 
-// const parseContactsFilterParams = ({ month, year }) => {
-//   const parsedType = monthList.includes(month) ? month : null;
-//   const parsedYear = yearList.includes(parseInt(year, 10))
-//     ? parseInt(year, 10)
-//     : null;
-//   return {
-//     month: parsedType,
-//     year: parsedYear,
-//   };
-// };
-
-// const parseContactsFilterParams = ({ month, year }) => {
-//   const parsedType = monthList.includes(month) ? month : null;
-//   const parsedYear = yearList.includes(parseInt(year, 10))
-//     ? String(year)
-//     : null; // Convert to string for filtering
-//   return {
-//     month: parsedType,
-//     year: parsedYear,
-//   };
-// };
-
 const parseContactsFilterParams = ({ day, month, year }) => {
   const parsedMonth = monthList.includes(month) ? month : null;
   const parsedYear = yearList.includes(parseInt(year, 10))

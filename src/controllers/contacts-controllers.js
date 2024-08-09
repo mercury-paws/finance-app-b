@@ -2,7 +2,7 @@ import createHttpError from 'http-errors';
 import {
   getWater,
   getWaterById,
-  getWaterDay,
+  // getWaterDay,
   addWater,
   upsertWater,
   deleteWater,
@@ -24,14 +24,22 @@ import Water from '../db/models/Water.js';
 
 export const getAllWaterController = async (req, res, next) => {
   const { _id: userId } = req.user;
-  const { month, year } = req.query;
+  const { day, month, year } = req.query;
+  console.log('day', day, 'month', month, 'year', year);
 
-  if (!monthList.includes(month)) {
+  if (month && day && getMaxDaysInMonth(month) < day) {
+    return res
+      .status(400)
+      .json({ status: 400, message: 'Invalid day parameter' });
+  }
+
+  if (month && !monthList.includes(month)) {
     return res
       .status(400)
       .json({ status: 400, message: 'Invalid month parameter' });
   }
-  if (!yearList.includes(parseInt(year, 10))) {
+
+  if (year && !yearList.includes(parseInt(year, 10))) {
     return res
       .status(400)
       .json({ status: 400, message: 'Invalid year parameter' });
@@ -40,14 +48,13 @@ export const getAllWaterController = async (req, res, next) => {
   const sortBy = sortByConstants[2];
   const sortOrder = sortOrderConstants[0];
 
-  const { page: parsedPage, perPage: parsedPerPage } = parsePaginationParams({
-    month,
-  });
-
   const filter = {
     ...parseContactsFilterParams(req.query),
     userId,
   };
+  const { page: parsedPage, perPage: parsedPerPage } = parsePaginationParams({
+    month,
+  });
 
   const data = await getWater({
     page: parsedPage,
@@ -81,74 +88,101 @@ export const getWaterByIdController = async (req, res, next) => {
   });
 };
 
-export const getWaterByDayController = async (req, res) => {
-  const { _id: userId } = req.user;
-  const { day, month, year } = req.query;
-  console.log('day', day, 'month', month, 'year', year);
+// export const getWaterByDayController = async (req, res) => {
+//   const { _id: userId } = req.user;
+//   const { day, month, year } = req.query;
+//   console.log('day', day, 'month', month, 'year', year);
 
-  if (getMaxDaysInMonth(month) < day) {
-    return res
-      .status(400)
-      .json({ status: 400, message: 'Invalid day parameter' });
-  }
-  if (!monthList.includes(month)) {
-    return res
-      .status(400)
-      .json({ status: 400, message: 'Invalid month parameter' });
-  }
-  if (!yearList.includes(parseInt(year, 10))) {
-    return res
-      .status(400)
-      .json({ status: 400, message: 'Invalid year parameter' });
-  }
+//   if (getMaxDaysInMonth(month) < day) {
+//     return res
+//       .status(400)
+//       .json({ status: 400, message: 'Invalid day parameter' });
+//   }
+//   if (!monthList.includes(month)) {
+//     return res
+//       .status(400)
+//       .json({ status: 400, message: 'Invalid month parameter' });
+//   }
+//   if (!yearList.includes(parseInt(year, 10))) {
+//     return res
+//       .status(400)
+//       .json({ status: 400, message: 'Invalid year parameter' });
+//   }
 
-  const sortBy = sortByConstants[2];
-  const sortOrder = sortOrderConstants[0];
+//   const sortBy = sortByConstants[2];
+//   const sortOrder = sortOrderConstants[0];
 
-  const filter = {
-    ...parseContactsFilterParams(req.query),
-    userId,
-  };
+//   const filter = {
+//     ...parseContactsFilterParams(req.query),
+//     userId,
+//   };
 
-  const data = await getWaterDay({
-    sortBy,
-    sortOrder,
-    filter,
-  });
+//   const data = await getWaterDay({
+//     sortBy,
+//     sortOrder,
+//     filter,
+//   });
 
-  res.json({
-    status: 200,
-    message: `Successfully found used water for the ${day}`,
-    data,
-  });
-};
+//   res.json({
+//     status: 200,
+//     message: `Successfully found used water for the day ${day}`,
+//     data,
+//   });
+// };
 
 export const addWaterController = async (req, res) => {
   const { _id: userId } = req.user;
+  const { id } = req.params;
   const { day, year, month } = req.query;
   const { ml, time } = req.body;
-  if (getMaxDaysInMonth(month) < day) {
+  if (getMaxDaysInMonth(month) < day || !day) {
     return res
       .status(400)
       .json({ status: 400, message: 'Invalid day parameter' });
   }
 
-  if (!monthList.includes(month)) {
+  if (!monthList.includes(month) || !month) {
     return res
       .status(400)
       .json({ status: 400, message: 'Invalid month parameter' });
   }
-  if (!yearList.includes(parseInt(year, 10))) {
+  if (!yearList.includes(parseInt(year, 10)) || !year) {
     return res
       .status(400)
       .json({ status: 400, message: 'Invalid year parameter' });
   }
+  const oldDataTimestamp = await Water.find({}, 'timestamp');
+  const listOfExistingTimestamps = oldDataTimestamp.map((doc) => doc.timestamp);
+  console.log(listOfExistingTimestamps);
+  // const {
+  //   time: oldTime,
+  //   day: oldDay,
+  //   month: oldMonth,
+  //   year: oldYear,
+  // } = currentWaterData;
+
+  // console.log(currentWaterData);
+
+  // if ((oldTime, oldDay, oldMonth, oldYear)) {
+  //   return res
+  //     .status(400)
+  //     .json({ status: 400, message: 'This time is already used' });
+  // }
+
   const monthNumber = getNumberOfMonth(month);
   const paddedDay = String(day).padStart(2, '0');
   const paddedMonth = String(monthNumber).padStart(2, '0');
   const fullTime = new Date(`${year}-${paddedMonth}-${paddedDay}T${time}:00Z`);
   const timestamp = fullTime.getTime();
 
+  const yes = listOfExistingTimestamps.includes(timestamp);
+  console.log(yes, 'Type of timestamp:', typeof timestamp);
+
+  if (listOfExistingTimestamps.includes(String(timestamp))) {
+    return res
+      .status(400)
+      .json({ status: 400, message: 'This time is already used' });
+  }
   // let photo = '';
   // if (req.file) {
   //   if (enable_cloudinary === 'true') {

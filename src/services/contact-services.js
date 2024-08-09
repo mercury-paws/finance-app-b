@@ -11,6 +11,9 @@ export const getWater = async ({
 }) => {
   const databaseQuery = Water.find();
 
+  if (filter.day) {
+    databaseQuery.where('day').equals(filter.day);
+  }
   if (filter.month) {
     databaseQuery.where('month').equals(filter.month);
   }
@@ -43,35 +46,35 @@ export const getWater = async ({
   };
 };
 
-export const getWaterDay = async ({ sortBy, sortOrder, filter }) => {
-  const databaseQuery = Water.find();
+// export const getWaterDay = async ({ sortBy, sortOrder, filter }) => {
+//   const databaseQuery = Water.find();
 
-  if (filter.day) {
-    databaseQuery.where('day').equals(filter.day);
-  }
-  if (filter.month) {
-    databaseQuery.where('month').equals(filter.month);
-  }
-  if (filter.year) {
-    databaseQuery.where('year').equals(filter.year);
-  }
+//   if (filter.day) {
+//     databaseQuery.where('day').equals(filter.day);
+//   }
+//   if (filter.month) {
+//     databaseQuery.where('month').equals(filter.month);
+//   }
+//   if (filter.year) {
+//     databaseQuery.where('year').equals(filter.year);
+//   }
 
-  if (filter.userId) {
-    databaseQuery.where('userId').equals(filter.userId);
-  }
+//   if (filter.userId) {
+//     databaseQuery.where('userId').equals(filter.userId);
+//   }
 
-  const items = await databaseQuery.sort({ [sortBy]: sortOrder });
+//   const items = await databaseQuery.sort({ [sortBy]: sortOrder });
 
-  const totalItems = await Water.find().merge(databaseQuery).countDocuments();
+//   const totalItems = await Water.find().merge(databaseQuery).countDocuments();
 
-  const { totalPages } = calcPaginationData(totalItems);
+//   const { totalPages } = calcPaginationData(totalItems);
 
-  return {
-    items,
-    totalItems,
-    totalPages,
-  };
-};
+//   return {
+//     items,
+//     totalItems,
+//     totalPages,
+//   };
+// };
 
 export const getWaterById = (filter) => Water.findOne(filter);
 
