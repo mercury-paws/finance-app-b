@@ -24,8 +24,9 @@ const waterSchema = new Schema(
       validate: {
         validator: function (value) {
           const month = this.month;
+          const year = this.year;
           if (!month) return false;
-          const maxDays = getMaxDaysInMonth(month);
+          const maxDays = getMaxDaysInMonth(month, year);
           return value >= 1 && value <= maxDays;
         },
         message: (props) => `Invalid day ${props.value} for the provided month`,

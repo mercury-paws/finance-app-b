@@ -134,7 +134,7 @@ export const addWaterController = async (req, res) => {
   const { _id: userId } = req.user;
   const { day, year, month } = req.query;
   const { ml, time } = req.body;
-  if (getMaxDaysInMonth(month) < day || !day) {
+  if (getMaxDaysInMonth(month, year) < day || !day) {
     return res
       .status(400)
       .json({ status: 400, message: 'Invalid day parameter' });

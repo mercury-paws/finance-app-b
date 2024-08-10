@@ -33,7 +33,7 @@ export const validateEmail = {
   message: (props) => `${props.value} is not a valid email!`,
 };
 
-export const getMaxDaysInMonth = (month) => {
+export const getMaxDaysInMonth = (month, year) => {
   const monthDays = {
     January: 31,
     February:
