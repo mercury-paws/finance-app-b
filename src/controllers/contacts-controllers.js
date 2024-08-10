@@ -132,7 +132,6 @@ export const getWaterByIdController = async (req, res, next) => {
 
 export const addWaterController = async (req, res) => {
   const { _id: userId } = req.user;
-  const { id } = req.params;
   const { day, year, month } = req.query;
   const { ml, time } = req.body;
   if (getMaxDaysInMonth(month) < day || !day) {
@@ -153,7 +152,7 @@ export const addWaterController = async (req, res) => {
   }
   const oldDataTimestamp = await Water.find({}, 'timestamp');
   const listOfExistingTimestamps = oldDataTimestamp.map((doc) => doc.timestamp);
-  console.log(listOfExistingTimestamps);
+
   // const {
   //   time: oldTime,
   //   day: oldDay,
@@ -174,9 +173,6 @@ export const addWaterController = async (req, res) => {
   const paddedMonth = String(monthNumber).padStart(2, '0');
   const fullTime = new Date(`${year}-${paddedMonth}-${paddedDay}T${time}:00Z`);
   const timestamp = fullTime.getTime();
-
-  const yes = listOfExistingTimestamps.includes(timestamp);
-  console.log(yes, 'Type of timestamp:', typeof timestamp);
 
   if (listOfExistingTimestamps.includes(String(timestamp))) {
     return res

@@ -36,7 +36,8 @@ export const validateEmail = {
 export const getMaxDaysInMonth = (month) => {
   const monthDays = {
     January: 31,
-    February: 28,
+    February:
+      (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0 ? 29 : 28,
     March: 31,
     April: 30,
     May: 31,
