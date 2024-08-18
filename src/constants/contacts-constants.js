@@ -69,3 +69,5 @@ export const getNumberOfMonth = (month) => {
   };
   return monthNumber[month];
 };
+
+export const genderList = ['male', 'female'];

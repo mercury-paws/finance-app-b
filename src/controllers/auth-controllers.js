@@ -4,6 +4,7 @@ import {
   findUser,
   updateUser,
   updatePassword,
+  upsertUser,
 } from '../services/auth-services.js';
 import { compareHash } from '../utils/hash.js';
 import {
@@ -87,6 +88,47 @@ export const signupController = async (req, res) => {
   res.status(201).json({
     status: 201,
     message: 'Successfully registered a user!',
+    data,
+  });
+};
+
+export const updateUserController = async (req, res) => {
+  const { email } = req.query;
+  const { refreshToken, sessionId } = req.cookies;
+
+  const currentSession = await findSession({ refreshToken, _id: sessionId });
+  if (!currentSession) {
+    throw createHttpError(401, 'Session not found');
+  }
+
+  const user = await findUser({ email });
+  if (!user) {
+    throw createHttpError(400, 'User not found');
+  }
+
+  const filter = { email }; // User filter
+  const updateData = req.body;
+
+  const { result: updatedUser } = await upsertUser(filter, updateData, {
+    upsert: true,
+  });
+
+  if (!updatedUser) {
+    throw createHttpError(500, 'Error updating user');
+  }
+
+  const data = {
+    name: updatedUser.name,
+    email: updatedUser.email,
+    gender: updatedUser.gender,
+    weight: updatedUser.weight,
+    sportTime: updatedUser.sportTime,
+    waterVolume: updatedUser.waterVolume,
+  };
+
+  res.status(201).json({
+    status: 201,
+    message: 'Successfully updated user!',
     data,
   });
 };

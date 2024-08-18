@@ -6,6 +6,7 @@ import {
   userSignupSchema,
   requestResetEmailSchema,
   resetPasswordSchema,
+  userUpdateSchema,
   userGoodleAuthCodeSchema,
 } from '../validation/user-schema.js';
 import {
@@ -18,6 +19,7 @@ import {
   requestResetEmailController,
   getGoogleOAuthUrlController,
   authGoogleController,
+  updateUserController,
 } from '../controllers/auth-controllers.js';
 
 // http://localhost:3000/auth/confirm-google-oauth
@@ -33,6 +35,12 @@ authRouter.post(
   '/login',
   validateBody(userSigninSchema),
   ctrlWrapper(signinController),
+);
+
+authRouter.patch(
+  '/settings',
+  validateBody(userUpdateSchema),
+  ctrlWrapper(updateUserController),
 );
 
 authRouter.post('/refresh', ctrlWrapper(refreshController));

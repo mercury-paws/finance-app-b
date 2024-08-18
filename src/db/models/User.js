@@ -1,5 +1,8 @@
 import { Schema, model } from 'mongoose';
-import { validateEmail } from '../../constants/contacts-constants.js';
+import {
+  validateEmail,
+  genderList,
+} from '../../constants/contacts-constants.js';
 import { mongooseSaveError, setUpdateSettings } from './hooks.js';
 
 const userSchema = new Schema(
@@ -26,6 +29,33 @@ const userSchema = new Schema(
       type: Boolean,
       default: false,
       required: true,
+    },
+    gender: {
+      type: String,
+      required: false,
+      values: genderList,
+      unique: false,
+    },
+    weight: {
+      type: Number,
+      required: false,
+      unique: false,
+      min: 10,
+      max: 250,
+    },
+    sportTime: {
+      type: Number,
+      required: false,
+      unique: false,
+      min: 0.1,
+      max: 24,
+    },
+    waterVolume: {
+      type: Number,
+      required: false,
+      unique: false,
+      min: 1,
+      max: 15,
     },
   },
   {

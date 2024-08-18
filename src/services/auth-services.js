@@ -18,3 +18,26 @@ export const updatePassword = async (filter, data) => {
   return User.findOneAndUpdate(filter, { password: hashPassword });
 };
 // export const resetEmail = (filter, data) => User.findOneAndUpdate(filter, data);
+
+export const upsertUser = async (
+  filter,
+  data,
+  options = {},
+  // photo,
+) => {
+  // if (photo) {
+  //   data.photo = photo;
+  // }
+  const result = await User.findOneAndUpdate(filter, data, {
+    new: true,
+    runValidators: true,
+    ...options,
+  });
+
+  if (!result) return null;
+
+  return {
+    result,
+    isNew: Boolean(result.lastErrorObject?.upserted),
+  };
+};
