@@ -81,7 +81,7 @@ export const signupController = async (req, res) => {
   // await sendEmailtoConfirm(verifyEmail);
 
   const data = {
-    name: newUser.name,
+    // name: newUser.name,
     email: newUser.email,
   };
 
@@ -178,6 +178,7 @@ export const signinController = async (req, res) => {
     message: 'Successfully logged in an user!',
     data: {
       accessToken: session.accessToken,
+      userName: user.name,
     },
   });
 };

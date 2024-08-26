@@ -11,7 +11,7 @@ const userSchema = new Schema(
       type: String,
       minLength: [3, 'Must be at least 3, got {VALUE}'],
       maxLength: 20,
-      required: [true, 'User name  required'],
+      required: false,
     },
     email: {
       type: String,

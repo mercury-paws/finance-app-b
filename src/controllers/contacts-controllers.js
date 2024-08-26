@@ -254,6 +254,19 @@ export const patchWaterController = async (req, res) => {
   // }
 
   const currentWaterData = await Water.findOne({ _id: id, userId });
+  // let { fullTime } = currentWaterData;
+
+  // const datePart = fullTime.toISOString().split('T')[0];
+  // const newFullTime = new Date(`${datePart}T${time}:00.000Z`);
+
+  // const timestamp = newFullTime.getTime();
+
+  // const updatedData = {
+  //   ...req.body,
+  //   fullTime: newFullTime,
+  //   timestamp,
+  // };
+
   let { fullTime } = currentWaterData;
 
   const datePart = fullTime.toISOString().split('T')[0];
@@ -295,5 +308,6 @@ export const deleteController = async (req, res) => {
   res.json({
     status: 204,
     message: 'Successfully deleted information about used water!',
+    _id: id,
   });
 };

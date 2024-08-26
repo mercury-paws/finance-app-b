@@ -2,11 +2,11 @@ import Joi from 'joi';
 import { emailRegexp, genderList } from '../constants/contacts-constants.js';
 
 export const userSignupSchema = Joi.object({
-  name: Joi.string().min(3).max(20).required().messages({
-    'string.min': 'Username should have at least {#limit} characters',
-    'string.max': 'Username should have at most {#limit} characters',
-    'any.required': 'Username is required',
-  }),
+  // name: Joi.string().min(3).max(20).required().messages({
+  //   'string.min': 'Username should have at least {#limit} characters',
+  //   'string.max': 'Username should have at most {#limit} characters',
+  //   'any.required': 'Username is required',
+  // }),
   email: Joi.string().pattern(emailRegexp).required().messages({
     'string.pattern.base':
       'Email should be of the following format: name@example.com',
