@@ -178,7 +178,8 @@ export const signinController = async (req, res) => {
     message: 'Successfully logged in an user!',
     data: {
       accessToken: session.accessToken,
-      userName: user.name,
+      name: user.name,
+      email: user.email,
     },
   });
 };
