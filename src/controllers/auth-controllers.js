@@ -38,12 +38,18 @@ const setupResponseSession = (
 ) => {
   res.cookie('refreshToken', refreshToken, {
     httpOnly: true,
+
     expires: refreshTokenValidUntil,
+    path: '/',
+    secure: true,
   });
 
   res.cookie('sessionId', _id, {
     httpOnly: true,
+
     expires: refreshTokenValidUntil,
+    path: '/',
+    secure: true,
   });
 };
 
@@ -112,6 +118,10 @@ export const updateUserController = async (req, res) => {
   const { result: updatedUser } = await upsertUser(filter, updateData, {
     upsert: true,
   });
+
+  // const updatedUser = await upsertUser(filter, updateData, {
+  //   upsert: true,
+  // });
 
   if (!updatedUser) {
     throw createHttpError(500, 'Error updating user');
