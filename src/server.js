@@ -19,7 +19,16 @@ export default function setupServer() {
     },
   });
 
+  // CORS configuration
+  // const corsOptions = {
+  //   origin: 'http://localhost:5173', // Specify the allowed origin
+  //   credentials: true, // Allow credentials (cookies) to be sent
+  // };
+
+  // // Use the CORS middleware
+  // app.use(cors(corsOptions));
   app.use(cors());
+
   app.use(logger);
   app.use(cookieParser());
   app.use(express.json());
