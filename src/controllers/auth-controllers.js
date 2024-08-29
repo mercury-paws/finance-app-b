@@ -197,6 +197,11 @@ export const signinController = async (req, res) => {
 export const refreshController = async (req, res) => {
   const { refreshToken, sessionId } = req.cookies;
   const currentSession = await findSession({ refreshToken, _id: sessionId });
+  // const { email } = req.query;
+  // if (!email) {
+  //   throw createHttpError(400, 'Email is required');
+  // }
+  // console.log(email);
   if (!currentSession) {
     throw createHttpError(401, 'Session not found');
   }
@@ -206,7 +211,11 @@ export const refreshController = async (req, res) => {
   if (refreshTokenExpired) {
     throw createHttpError(401, 'Session expired');
   }
+  const user = await findUser({ _id: currentSession.userId });
 
+  if (!user) {
+    throw createHttpError(404, 'User not found');
+  }
   const newSession = await createSession(currentSession.userId);
 
   setupResponseSession(res, newSession);
@@ -216,6 +225,12 @@ export const refreshController = async (req, res) => {
     message: 'Successfully refreshed a session!',
     data: {
       accessToken: newSession.accessToken,
+      name: user.name,
+      email: user.email,
+      gender: user.gender,
+      weight: user.weight,
+      sportTime: user.sportTime,
+      waterVolume: user.waterVolume,
     },
   });
 };
