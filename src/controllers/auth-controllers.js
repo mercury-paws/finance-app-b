@@ -190,6 +190,7 @@ export const signinController = async (req, res) => {
       accessToken: session.accessToken,
       name: user.name,
       email: user.email,
+      waterVolume: user.waterVolume,
     },
   });
 };
@@ -197,11 +198,7 @@ export const signinController = async (req, res) => {
 export const refreshController = async (req, res) => {
   const { refreshToken, sessionId } = req.cookies;
   const currentSession = await findSession({ refreshToken, _id: sessionId });
-  // const { email } = req.query;
-  // if (!email) {
-  //   throw createHttpError(400, 'Email is required');
-  // }
-  // console.log(email);
+
   if (!currentSession) {
     throw createHttpError(401, 'Session not found');
   }
