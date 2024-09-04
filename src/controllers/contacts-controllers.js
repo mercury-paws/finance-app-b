@@ -17,10 +17,6 @@ import {
 } from '../constants/contacts-constants.js';
 import { sortByConstants, sortOrderConstants } from '../constants/constants.js';
 import Water from '../db/models/Water.js';
-// import saveFileToPublicDir from '../utils/saveFileToPublicDir.js';
-// import saveFileToCloudinary from '../utils/saveFileToCloudinary.js';
-// import { env } from '../utils/env.js';
-// const enable_cloudinary = env('ENABLE_CLOUDINARY');
 
 export const getAllWaterController = async (req, res, next) => {
   const { _id: userId } = req.user;
@@ -179,14 +175,6 @@ export const addWaterController = async (req, res) => {
       .status(400)
       .json({ status: 400, message: 'This time is already used' });
   }
-  // let photo = '';
-  // if (req.file) {
-  //   if (enable_cloudinary === 'true') {
-  //     photo = await saveFileToCloudinary(req.file, 'photo');
-  //   } else {
-  //     photo = await saveFileToPublicDir(req.file, 'photo');
-  //   }
-  // }
 
   const data = await addWater({
     ml,
@@ -211,14 +199,7 @@ export const addWaterController = async (req, res) => {
 export const putWaterController = async (req, res) => {
   const { id } = req.params;
   const { _id: userId } = req.user;
-  // let photo = '';
-  // if (req.file) {
-  //   if (enable_cloudinary === 'true') {
-  //     photo = await saveFileToCloudinary(req.file, 'photo');
-  //   } else {
-  //     photo = await saveFileToPublicDir(req.file, 'photo');
-  //   }
-  // }
+
   const data = await upsertWater(
     { _id: id, userId },
     req.body,
@@ -244,28 +225,7 @@ export const patchWaterController = async (req, res) => {
   const { _id: userId } = req.user;
   const { time } = req.body;
 
-  // let photo = '';
-  // if (req.file) {
-  //   if (enable_cloudinary === 'true') {
-  //     photo = await saveFileToCloudinary(req.file, 'photo');
-  //   } else {
-  //     photo = await saveFileToPublicDir(req.file, 'photo');
-  //   }
-  // }
-
   const currentWaterData = await Water.findOne({ _id: id, userId });
-  // let { fullTime } = currentWaterData;
-
-  // const datePart = fullTime.toISOString().split('T')[0];
-  // const newFullTime = new Date(`${datePart}T${time}:00.000Z`);
-
-  // const timestamp = newFullTime.getTime();
-
-  // const updatedData = {
-  //   ...req.body,
-  //   fullTime: newFullTime,
-  //   timestamp,
-  // };
 
   let { fullTime } = currentWaterData;
 
@@ -280,11 +240,7 @@ export const patchWaterController = async (req, res) => {
     timestamp,
   };
 
-  const data = await upsertWater(
-    { _id: id, userId },
-    updatedData,
-    //photo
-  );
+  const data = await upsertWater({ _id: id, userId }, updatedData);
 
   if (!data) {
     throw createHttpError(404, 'Information about used water not found');

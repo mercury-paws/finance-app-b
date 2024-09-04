@@ -26,7 +26,9 @@ import {
   getGoogleOAuthName,
 } from '../utils/googleOAuth2.js';
 import { randomBytes } from 'node:crypto';
-
+import saveFileToPublicDir from '../utils/saveFileToPublicDir.js';
+import saveFileToCloudinary from '../utils/saveFileToCloudinary.js';
+const enable_cloudinary = env('ENABLE_CLOUDINARY');
 const app_domain = env('APP_DOMAIN', 'http://localhost:3000');
 const jwt_secret = env('JWT_SECRET');
 // const verifyEmailPath = path.join(TEMPLATES_DIR, 'verify-email.html');
@@ -102,6 +104,8 @@ export const updateUserController = async (req, res) => {
   const { email } = req.query;
   const { refreshToken, sessionId } = req.cookies;
 
+  console.log('req.file', req.file, 'req.query', req.query);
+
   const currentSession = await findSession({ refreshToken, _id: sessionId });
   if (!currentSession) {
     throw createHttpError(401, 'Session not found');
@@ -115,7 +119,16 @@ export const updateUserController = async (req, res) => {
   const filter = { email }; // User filter
   const updateData = req.body;
 
-  const { result: updatedUser } = await upsertUser(filter, updateData, {
+  let photo = '';
+  if (req.file) {
+    if (enable_cloudinary === 'true') {
+      photo = await saveFileToCloudinary(req.file, 'photo');
+    } else {
+      photo = await saveFileToPublicDir(req.file, 'photo');
+    }
+  }
+
+  const { result: updatedUser } = await upsertUser(filter, updateData, photo, {
     upsert: true,
   });
 
@@ -134,6 +147,7 @@ export const updateUserController = async (req, res) => {
     weight: updatedUser.weight,
     sportTime: updatedUser.sportTime,
     waterVolume: updatedUser.waterVolume,
+    photo: updatedUser.photo,
   };
 
   res.status(201).json({

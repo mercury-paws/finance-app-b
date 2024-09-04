@@ -6,7 +6,6 @@ import {
   putWaterController,
   patchWaterController,
   deleteController,
-  // getWaterByDayController,
 } from '../controllers/contacts-controllers.js';
 import ctrlWrapper from '../utils/ctrlWrapper.js';
 import isValidId from '../middlewares/isValidId.js';
@@ -16,14 +15,11 @@ import {
   waterUpdateSchema,
 } from '../validation/water-schema.js';
 import authenticate from '../middlewares/authenticate.js';
-// import upload from '../middlewares/upload.js';
 
 const waterRouter = Router();
 
 waterRouter.use(authenticate);
 waterRouter.get('/', ctrlWrapper(getAllWaterController));
-
-// waterRouter.get('/day', ctrlWrapper(getWaterByDayController));
 
 waterRouter.get('/:id', isValidId, ctrlWrapper(getWaterByIdController));
 
@@ -37,7 +33,7 @@ waterRouter.put('/:id', isValidId, ctrlWrapper(putWaterController));
 
 waterRouter.patch(
   '/:id',
-  // upload.single('photo'),
+
   isValidId,
   validateBody(waterUpdateSchema),
   ctrlWrapper(patchWaterController),

@@ -57,6 +57,9 @@ const userSchema = new Schema(
       min: 1,
       max: 15,
     },
+    photo: {
+      type: String,
+    },
   },
   {
     timestamps: true,

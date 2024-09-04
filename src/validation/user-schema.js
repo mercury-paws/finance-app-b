@@ -86,4 +86,5 @@ export const userUpdateSchema = Joi.object({
     'number.max': 'Water volume should be at most 15 liters',
     'any.required': 'Water volume is required',
   }),
+  photo: Joi.any().optional(),
 });

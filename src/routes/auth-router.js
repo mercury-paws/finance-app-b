@@ -21,6 +21,7 @@ import {
   authGoogleController,
   updateUserController,
 } from '../controllers/auth-controllers.js';
+import upload from '../middlewares/upload.js';
 
 // http://localhost:3000/auth/confirm-google-oauth
 
@@ -39,6 +40,7 @@ authRouter.post(
 
 authRouter.patch(
   '/settings',
+  upload.single('photo'),
   validateBody(userUpdateSchema),
   ctrlWrapper(updateUserController),
 );
