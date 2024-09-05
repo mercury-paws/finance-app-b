@@ -22,7 +22,7 @@ export default function setupServer() {
   const corsOptions = {
     origin:
       process.env.NODE_ENV === 'production'
-        ? 'https://your-production-frontend-domain.com'
+        ? 'https://water-app-f.vercel.app/'
         : 'http://localhost:5173',
     credentials: true,
   };
