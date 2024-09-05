@@ -116,8 +116,8 @@ export const updateUserController = async (req, res) => {
     throw createHttpError(400, 'User not found');
   }
 
-  const filter = { email }; // User filter
-  const updateData = req.body;
+  const filter = { email };
+  let updateData = req.body;
 
   let photo = '';
   if (req.file) {
@@ -128,13 +128,13 @@ export const updateUserController = async (req, res) => {
     }
   }
 
-  const { result: updatedUser } = await upsertUser(filter, updateData, photo, {
+  if (photo) {
+    updateData = { ...updateData, photo };
+  }
+
+  const { result: updatedUser } = await upsertUser(filter, updateData, {
     upsert: true,
   });
-
-  // const updatedUser = await upsertUser(filter, updateData, {
-  //   upsert: true,
-  // });
 
   if (!updatedUser) {
     throw createHttpError(500, 'Error updating user');
@@ -205,6 +205,7 @@ export const signinController = async (req, res) => {
       name: user.name,
       email: user.email,
       waterVolume: user.waterVolume,
+      photo: user.photo,
     },
   });
 };
@@ -242,6 +243,7 @@ export const refreshController = async (req, res) => {
       weight: user.weight,
       sportTime: user.sportTime,
       waterVolume: user.waterVolume,
+      photo: user.photo,
     },
   });
 };
