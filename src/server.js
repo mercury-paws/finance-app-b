@@ -20,7 +20,10 @@ export default function setupServer() {
   });
 
   const corsOptions = {
-    origin: 'https://water-app-f.vercel.app/',
+    origin:
+      process.env.NODE_ENV === 'production'
+        ? 'https://water-app-f.vercel.app/'
+        : 'http://localhost:5173',
     credentials: true,
   };
 
