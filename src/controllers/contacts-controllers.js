@@ -146,7 +146,7 @@ export const addWaterController = async (req, res) => {
       .status(400)
       .json({ status: 400, message: 'Invalid year parameter' });
   }
-  const oldDataTimestamp = await Water.find({}, 'timestamp');
+  const oldDataTimestamp = await Water.find({ userId }, 'timestamp');
   const listOfExistingTimestamps = oldDataTimestamp.map((doc) => doc.timestamp);
 
   // const {

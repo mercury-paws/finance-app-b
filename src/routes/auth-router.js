@@ -7,7 +7,7 @@ import {
   requestResetEmailSchema,
   resetPasswordSchema,
   userUpdateSchema,
-  userGoodleAuthCodeSchema,
+  // userGoodleAuthCodeSchema,
 } from '../validation/user-schema.js';
 import {
   signupController,
@@ -17,8 +17,8 @@ import {
   verifyController,
   verifyResetPasswordController,
   requestResetEmailController,
-  getGoogleOAuthUrlController,
-  authGoogleController,
+  // getGoogleOAuthUrlController,
+  // authGoogleController,
   updateUserController,
   getPhotosController,
 } from '../controllers/auth-controllers.js';
@@ -65,12 +65,12 @@ authRouter.post(
   ctrlWrapper(requestResetEmailController),
 );
 
-authRouter.get('/get-oauth-url', ctrlWrapper(getGoogleOAuthUrlController));
+// authRouter.get('/get-oauth-url', ctrlWrapper(getGoogleOAuthUrlController));
 
-authRouter.post(
-  '/confirm-google-auth',
-  validateBody(userGoodleAuthCodeSchema),
-  ctrlWrapper(authGoogleController),
-);
+// authRouter.post(
+//   '/confirm-google-auth',
+//   validateBody(userGoodleAuthCodeSchema),
+//   ctrlWrapper(authGoogleController),
+// );
 
 export default authRouter;
