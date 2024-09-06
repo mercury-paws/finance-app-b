@@ -3,6 +3,11 @@ import { hashValue } from '../utils/hash.js';
 
 export const findUser = (filter) => User.findOne(filter);
 
+export const findPhotos = () => {
+  const users = User.find({ photo: { $exists: true, $ne: null } }, 'photo');
+  return users;
+};
+
 export const signup = async (data) => {
   const { password } = data;
   const hashPassword = await hashValue(password);

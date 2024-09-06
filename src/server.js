@@ -19,11 +19,16 @@ export default function setupServer() {
     },
   });
 
+  // const corsOptions = {
+  //   origin:
+  //     process.env.NODE_ENV === 'production'
+  //       ? 'https://water-app-f.vercel.app/'
+  //       : 'http://localhost:5173',
+  //   credentials: true,
+  // };
+
   const corsOptions = {
-    origin:
-      process.env.NODE_ENV === 'production'
-        ? 'https://water-app-f.vercel.app/'
-        : 'http://localhost:5173',
+    origin: 'http://localhost:5173',
     credentials: true,
   };
 

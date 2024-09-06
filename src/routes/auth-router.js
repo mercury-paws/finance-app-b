@@ -20,12 +20,15 @@ import {
   getGoogleOAuthUrlController,
   authGoogleController,
   updateUserController,
+  getPhotosController,
 } from '../controllers/auth-controllers.js';
 import upload from '../middlewares/upload.js';
 
 // http://localhost:3000/auth/confirm-google-oauth
 
 const authRouter = Router();
+authRouter.get('/photos', ctrlWrapper(getPhotosController));
+
 authRouter.post(
   '/register',
   validateBody(userSignupSchema),

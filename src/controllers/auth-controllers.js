@@ -5,6 +5,7 @@ import {
   updateUser,
   updatePassword,
   upsertUser,
+  findPhotos,
 } from '../services/auth-services.js';
 import { compareHash } from '../utils/hash.js';
 import {
@@ -206,6 +207,26 @@ export const signinController = async (req, res) => {
       email: user.email,
       waterVolume: user.waterVolume,
       photo: user.photo,
+    },
+  });
+};
+
+export const getPhotosController = async (req, res) => {
+  const photos = await findPhotos();
+
+  if (!photos) {
+    throw createHttpError(404, 'Photos not found');
+  }
+
+  // if (!user.verify) {
+  //   throw createHttpError(401, 'Email not verified');
+  // }
+
+  res.json({
+    status: 200,
+    message: 'Successfully found photos!',
+    data: {
+      photos,
     },
   });
 };
