@@ -3,20 +3,23 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>YourClient app settings message</title>
+    <title>My-Water app settings message</title>
   </head>
   <body>
     <section>
-      <h4>Hello {{user_name}}!</h4>
+      <h2>Hello!</h2>
       <p>
-        In order to further use the services of the YourClient app, you need to
+        In order to further use the services of the My-Water app, you need to
         verify your email. Please click
-        <a target="_blank" href="{{app_domain}}/auth/verify?token={{token}}"
+        <a
+          target="_blank"
+          href="{{app_domain}}/water-app/auth/verify?token={{token}}"
           >here</a
         >.
       </p>
-      <p>regards</p>
-      <p>YourClient app Team</p>
+      <p>After that you will be redirrected to the SignIn page.</p>
+      <p>Regards</p>
+      <p>My-Water app Team</p>
     </section>
   </body>
 </html>

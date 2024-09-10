@@ -13,7 +13,7 @@ import {
   findSession,
   deleteSession,
 } from '../services/session-services.js';
-// import sendEmailtoConfirm from '../utils/sendEmailToConfirm.js';
+import sendEmailtoConfirm from '../utils/sendEmailToConfirm.js';
 import sendEmailtoReset from '../utils/sendEmail.js';
 import { env } from '../utils/env.js';
 import jwt from 'jsonwebtoken';
@@ -32,7 +32,7 @@ import saveFileToCloudinary from '../utils/saveFileToCloudinary.js';
 const enable_cloudinary = env('ENABLE_CLOUDINARY');
 const app_domain = env('APP_DOMAIN', 'http://localhost:3000');
 const jwt_secret = env('JWT_SECRET');
-// const verifyEmailPath = path.join(TEMPLATES_DIR, 'verify-email.html');
+const verifyEmailPath = path.join(TEMPLATES_DIR, 'verify-email.html');
 const resetEmailPath = path.join(TEMPLATES_DIR, 'reset-password-email.html');
 
 const setupResponseSession = (
@@ -65,32 +65,30 @@ export const signupController = async (req, res) => {
   const newUser = await signup(req.body);
   console.log(req.body);
 
-  // const payload = {
-  //   id: newUser._id,
-  //   email,
-  // };
+  const payload = {
+    id: newUser._id,
+    email,
+  };
 
-  // const token = jwt.sign(payload, jwt_secret);
-  // const emailTemplateSource = await fs.readFile(verifyEmailPath, 'utf-8');
-  // const emailTemplate = handlebars.compile(emailTemplateSource);
+  const token = jwt.sign(payload, jwt_secret);
+  const emailTemplateSource = await fs.readFile(verifyEmailPath, 'utf-8');
+  const emailTemplate = handlebars.compile(emailTemplateSource);
 
-  // const html = emailTemplate({
-  //   user_name: newUser.name,
-  //   app_domain,
-  //   token,
-  // });
+  const html = emailTemplate({
+    app_domain,
+    token,
+  });
 
-  // const verifyEmail = {
-  //   subject: 'Verify Email',
-  //   to: email,
-  //   html,
-  //`<a target="_blank" href="${app_domain}/auth/verify?token=${token}">Click to verify your email</a>`,
-  // };
+  const verifyEmail = {
+    subject: 'Verify Email',
+    to: email,
+    html,
+    // `<a target="_blank" href="${app_domain}/auth/verify?token=${token}">Click to verify your email</a>`,
+  };
 
-  // await sendEmailtoConfirm(verifyEmail);
+  await sendEmailtoConfirm(verifyEmail);
 
   const data = {
-    // name: newUser.name,
     email: newUser.email,
   };
 
@@ -168,10 +166,12 @@ export const verifyController = async (req, res) => {
     }
     await updateUser({ email }, { verify: true });
 
-    res.json({
-      status: 200,
-      message: 'Email verified successfully',
-    });
+    // res.json({
+    //   status: 200,
+    //   message: 'Email verified successfully',
+    // });
+
+    res.redirect('http://localhost:5173/signin');
   } catch (error) {
     throw createHttpError(401, error.message);
   }
@@ -186,9 +186,9 @@ export const signinController = async (req, res) => {
     throw createHttpError(404, 'Email not found');
   }
 
-  // if (!user.verify) {
-  //   throw createHttpError(401, 'Email not verified');
-  // }
+  if (!user.verify) {
+    throw createHttpError(401, 'Email not verified');
+  }
 
   const passwordCompare = await compareHash(password, user.password);
   if (!passwordCompare) {
