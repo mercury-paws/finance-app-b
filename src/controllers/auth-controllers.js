@@ -171,7 +171,7 @@ export const verifyController = async (req, res) => {
     //   message: 'Email verified successfully',
     // });
 
-    res.redirect('http://localhost:5173/signin');
+    res.redirect('https://water-app-f.vercel.app/signin');
   } catch (error) {
     throw createHttpError(401, error.message);
   }

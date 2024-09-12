@@ -28,7 +28,7 @@ export default function setupServer() {
   // };
 
   const corsOptions = {
-    origin: 'http://localhost:5173',
+    origin: 'https://water-app-f.vercel.app/',
     credentials: true,
   };
 
