@@ -43,7 +43,7 @@ const setupResponseSession = (
     httpOnly: true,
 
     expires: refreshTokenValidUntil,
-    path: '/',
+    path: '/tracker',
     secure: true,
     sameSite: 'None',
   });
@@ -52,7 +52,7 @@ const setupResponseSession = (
     httpOnly: true,
 
     expires: refreshTokenValidUntil,
-    path: '/',
+    path: '/tracker',
     secure: true,
     sameSite: 'None',
   });
