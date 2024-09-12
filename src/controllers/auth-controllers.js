@@ -45,6 +45,7 @@ const setupResponseSession = (
     expires: refreshTokenValidUntil,
     path: '/',
     secure: true,
+    sameSite: 'None',
   });
 
   res.cookie('sessionId', _id, {
@@ -53,6 +54,7 @@ const setupResponseSession = (
     expires: refreshTokenValidUntil,
     path: '/',
     secure: true,
+    sameSite: 'None',
   });
 };
 
@@ -165,11 +167,6 @@ export const verifyController = async (req, res) => {
       throw createHttpError(404, 'User not found');
     }
     await updateUser({ email }, { verify: true });
-
-    // res.json({
-    //   status: 200,
-    //   message: 'Email verified successfully',
-    // });
 
     res.redirect('https://water-app-f.vercel.app/signin');
   } catch (error) {
