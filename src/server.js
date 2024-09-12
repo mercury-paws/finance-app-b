@@ -30,7 +30,8 @@ export default function setupServer() {
   const corsOptions = {
     origin: 'https://water-app-f.vercel.app',
     credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    methods: ['GET', 'POST', 'PATCH', 'DELETE'], // amended put to patch
+    allowedHeaders: ['Content-Type', 'Authorization'], // added headers
   };
 
   app.use(cors(corsOptions));
