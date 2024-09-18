@@ -1,5 +1,5 @@
 import Joi from 'joi';
-import { timeRegexp, mlRegexp } from '../constants/contacts-constants.js';
+import { timeRegexp, mlRegexp } from '../constants/time-constants.js';
 
 export const waterAddSchema = Joi.object({
   ml: Joi.string().pattern(mlRegexp).required().messages({

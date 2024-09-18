@@ -1,0 +1,61 @@
+tags:
+  - Water
+summary: Update water
+operationId: upsertWater
+description: 'Update a used water by ID with payload'
+security:
+  - bearerAuth: []
+parameters:
+  - in: path
+    name: id
+    required: true
+    schema:
+      type: string
+    description: 'The ID of the water used to update'
+requestBody:
+  content:
+    application/json:
+      schema:
+        type: object
+        properties:
+          ml:
+            description: 'Ml drunk'
+            type: string
+            example: '350'
+          time:
+            description: 'Time when the water was drunk'
+            type: string
+            example: '10:00'
+          day:
+            description: 'Day when the water was drunk'
+            type: string
+            example: '5'
+          month:
+            description: 'Month when the water was drunk'
+            type: string
+            example: '5'
+responses:
+  '200':
+    description: Successfully updated information about used water!
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+            - data
+          properties:
+            status:
+              type: integer
+              example: 200
+            message:
+              type: string
+              example: Successfully updated information about used water!
+            data:
+              type: object
+              $ref: '../../../components/schemas/water.yaml'
+  '404':
+    $ref: '../../../components/responses/404.yaml'
+  # '404':
+  #   $ref: '../../components/responses/404.yaml'

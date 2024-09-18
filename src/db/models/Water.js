@@ -5,7 +5,7 @@ import {
   timeRegexp,
   mlRegexp,
   getMaxDaysInMonth,
-} from '../../constants/contacts-constants.js';
+} from '../../constants/time-constants.js';
 import { mongooseSaveError, setUpdateSettings } from './hooks.js';
 
 const waterSchema = new Schema(

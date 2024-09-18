@@ -1,8 +1,8 @@
 tags:
   - Contacts
-summary: Delete contact
-operationId: deleteContact
-description: 'Delete a contact by ID'
+summary: Delete water
+operationId: deleteWater
+description: 'Delete a water by ID'
 security:
   - bearerAuth: []
 parameters:
@@ -11,10 +11,10 @@ parameters:
     required: true
     schema:
       type: string
-    description: 'The ID of the contact to delete'
+    description: 'The ID of the water to delete'
 responses:
   '200':
-    description: Successfully deleted contact!
+    description: Successfully deleted information about used water!
     content:
       application/json:
         schema:
@@ -28,7 +28,7 @@ responses:
               example: 200
             message:
               type: string
-              example: Successfully deleted contact!
+              example: Successfully deleted information about used water!
   '404':
     $ref: '../../../components/responses/404.yaml'
   # '404':

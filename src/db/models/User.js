@@ -1,8 +1,5 @@
 import { Schema, model } from 'mongoose';
-import {
-  validateEmail,
-  genderList,
-} from '../../constants/contacts-constants.js';
+import { validateEmail, genderList } from '../../constants/time-constants.js';
 import { mongooseSaveError, setUpdateSettings } from './hooks.js';
 
 const userSchema = new Schema(

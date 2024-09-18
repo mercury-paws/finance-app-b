@@ -1,5 +1,5 @@
 import Joi from 'joi';
-import { emailRegexp, genderList } from '../constants/contacts-constants.js';
+import { emailRegexp, genderList } from '../constants/time-constants.js';
 
 export const userSignupSchema = Joi.object({
   // name: Joi.string().min(3).max(20).required().messages({

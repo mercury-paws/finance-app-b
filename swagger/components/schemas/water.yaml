@@ -1,0 +1,32 @@
+type: object
+required:
+  - _id
+  - name
+  - phoneNumber
+  - email
+  - contactType
+properties:
+  _id:
+    description: "Contact's id"
+    type: string
+    example: 65e4decdd286b30065d54af9
+  ml:
+    description: 'Ml drunk'
+    type: string
+    example: '350'
+  day:
+    description: 'Day when the water was drunk'
+    type: string
+    example: '5'
+  monthNumber:
+    description: 'Month when the water was drunk'
+    type: string
+    example: '5'
+  year:
+    description: 'Year when the water was drunk'
+    type: string
+    example: '2024'
+  time:
+    description: 'Time when the water was drunk'
+    type: string
+    example: '10:00'

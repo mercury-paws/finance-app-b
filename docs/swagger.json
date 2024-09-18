@@ -2,22 +2,22 @@
   "openapi": "3.1.0",
   "info": {
     "version": "1.0.0",
-    "title": "Contacts App",
+    "title": "Water App",
     "license": {
       "name": "Apache 2.0",
       "url": "<http://www.apache.org/licenses/LICENSE-2.0.html>"
     },
-    "description": "This a documentation of my Contacts App\n"
+    "description": "This a documentation of my Water App\n"
   },
   "servers": [
     {
-      "url": "<http://localhost:3000>"
+      "url": "https://water-app-b.onrender.com"
     }
   ],
   "tags": [
     {
-      "name": "Contacts",
-      "description": "Operation with contacts"
+      "name": "Water",
+      "description": "Operation with used water"
     },
     {
       "name": "Auth",
@@ -25,14 +25,14 @@
     }
   ],
   "paths": {
-    "/contacts": {
+    "/water": {
       "get": {
         "tags": [
           "Contacts"
         ],
-        "summary": "Get Contacts",
-        "operationId": "getContacts",
-        "description": "Get list of contacts",
+        "summary": "Get Water Info",
+        "operationId": "getAllWater",
+        "description": "Get water info",
         "security": [
           {
             "bearerAuth": []
@@ -41,7 +41,7 @@
         "parameters": [
           {
             "in": "query",
-            "name": "page",
+            "name": "day",
             "schema": {
               "type": "integer"
             },
@@ -49,7 +49,7 @@
           },
           {
             "in": "query",
-            "name": "perPage",
+            "name": "month",
             "schema": {
               "type": "integer",
               "example": 10
@@ -57,12 +57,12 @@
           },
           {
             "in": "query",
-            "name": "sortBy",
+            "name": "year",
             "schema": {
               "type": "string",
-              "example": "name"
+              "example": 2024
             },
-            "description": "All contact's fields can be mentioned. Default value - _id"
+            "description": "All fields can be mentioned. Default value - _id"
           },
           {
             "in": "query",
@@ -79,7 +79,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully found contacts!",
+            "description": "Successfully found used water!",
             "content": {
               "application/json": {
                 "schema": {
@@ -96,7 +96,7 @@
                     },
                     "message": {
                       "type": "string",
-                      "example": "Successfully found contacts!"
+                      "example": "Successfully found used water!"
                     },
                     "data": {
                       "type": "object",
@@ -113,7 +113,7 @@
                         "items": {
                           "type": "array",
                           "items": {
-                            "$ref": "#/components/schemas/contacts"
+                            "$ref": "#/components/schemas/water"
                           }
                         },
                         "page": {
@@ -122,11 +122,11 @@
                         },
                         "perPage": {
                           "type": "number",
-                          "example": 4
+                          "example": 30
                         },
                         "totalItems": {
                           "type": "number",
-                          "example": 4
+                          "example": 30
                         },
                         "totalPages": {
                           "type": "number",
@@ -154,11 +154,11 @@
       },
       "post": {
         "tags": [
-          "Contacts"
+          "Water"
         ],
-        "summary": "Create contact",
-        "operationId": "createContact",
-        "description": "Create a contact with payload",
+        "summary": "Create used water",
+        "operationId": "addWater",
+        "description": "Add a used water with payload",
         "security": [
           {
             "bearerAuth": []
@@ -166,50 +166,35 @@
         ],
         "requestBody": {
           "content": {
-            "multipart/form-data": {
+            "application/json": {
               "schema": {
                 "type": "object",
                 "required": [
-                  "name",
-                  "phoneNumber",
-                  "email",
-                  "contactType"
+                  "ml",
+                  "time",
+                  "day",
+                  "month"
                 ],
                 "properties": {
-                  "name": {
-                    "description": "Contact's name",
+                  "ml": {
+                    "description": "Ml drunk",
                     "type": "string",
-                    "example": "John Doe"
+                    "example": "350"
                   },
-                  "phoneNumber": {
-                    "description": "Contact's phone number",
+                  "time": {
+                    "description": "Time when the water was drunk",
                     "type": "string",
-                    "example": "xxx-xxx-xxxx"
+                    "example": "10:00"
                   },
-                  "email": {
-                    "description": "Contact's email",
+                  "day": {
+                    "description": "Day when the water was drunk",
                     "type": "string",
-                    "example": "name@example.com"
+                    "example": "5"
                   },
-                  "contactType": {
-                    "description": "Contact's type",
+                  "month": {
+                    "description": "Month when the water was drunk",
                     "type": "string",
-                    "enum": [
-                      "work",
-                      "home",
-                      "personal"
-                    ],
-                    "example": "home"
-                  },
-                  "isFavourite": {
-                    "description": "Whether is favorite",
-                    "type": "boolean",
-                    "example": false
-                  },
-                  "photo": {
-                    "description": "Contact's photo",
-                    "type": "string",
-                    "format": "binary"
+                    "example": "5"
                   }
                 }
               }
@@ -218,7 +203,7 @@
         },
         "responses": {
           "201": {
-            "description": "Creates a contact",
+            "description": "Creates a used water",
             "content": {
               "application/json": {
                 "schema": {
@@ -235,11 +220,11 @@
                     },
                     "message": {
                       "type": "string",
-                      "example": "Successfully created a contact!"
+                      "example": "Successfully added info about used water!"
                     },
                     "data": {
                       "type": "object",
-                      "$ref": "#/components/schemas/contacts"
+                      "$ref": "#/components/schemas/water"
                     }
                   }
                 }
@@ -252,14 +237,14 @@
         }
       }
     },
-    "/contacts/{id}": {
+    "/water/{id}": {
       "get": {
         "tags": [
-          "Contacts"
+          "Water"
         ],
-        "summary": "Get contacts by id",
-        "operationId": "getContact",
-        "description": "Get contact by id",
+        "summary": "Get water by id",
+        "operationId": "getWaterById",
+        "description": "Get water by id",
         "security": [
           {
             "bearerAuth": []
@@ -278,7 +263,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Get contact by id",
+            "description": "Get water by id",
             "content": {
               "application/json": {
                 "schema": {
@@ -295,11 +280,11 @@
                     },
                     "message": {
                       "type": "string",
-                      "example": "Successfully found student with id 65ca67e7ae7f10c88b598384!"
+                      "example": "Successfully found information about used with id 65ca67e7ae7f10c88b598384!"
                     },
                     "data": {
                       "type": "object",
-                      "$ref": "#/components/schemas/contacts"
+                      "$ref": "#/components/schemas/water"
                     }
                   }
                 }
@@ -313,11 +298,11 @@
       },
       "patch": {
         "tags": [
-          "Contacts"
+          "Water"
         ],
-        "summary": "Update contact",
-        "operationId": "updateContact",
-        "description": "Update a contact by ID with payload",
+        "summary": "Update water",
+        "operationId": "upsertWater",
+        "description": "Update a used water by ID with payload",
         "security": [
           {
             "bearerAuth": []
@@ -331,49 +316,34 @@
             "schema": {
               "type": "string"
             },
-            "description": "The ID of the contact to update"
+            "description": "The ID of the water used to update"
           }
         ],
         "requestBody": {
           "content": {
-            "multipart/form-data": {
+            "application/json": {
               "schema": {
                 "type": "object",
                 "properties": {
-                  "name": {
-                    "description": "Contact's name",
+                  "ml": {
+                    "description": "Ml drunk",
                     "type": "string",
-                    "example": "John Doe"
+                    "example": "350"
                   },
-                  "phoneNumber": {
-                    "description": "Contact's phone number",
+                  "time": {
+                    "description": "Time when the water was drunk",
                     "type": "string",
-                    "example": "xxx-xxx-xxxx"
+                    "example": "10:00"
                   },
-                  "email": {
-                    "description": "Contact's email",
+                  "day": {
+                    "description": "Day when the water was drunk",
                     "type": "string",
-                    "example": "name@example.com"
+                    "example": "5"
                   },
-                  "contactType": {
-                    "description": "Contact's type",
+                  "month": {
+                    "description": "Month when the water was drunk",
                     "type": "string",
-                    "enum": [
-                      "work",
-                      "home",
-                      "personal"
-                    ],
-                    "example": "home"
-                  },
-                  "isFavourite": {
-                    "description": "Whether is favorite",
-                    "type": "boolean",
-                    "example": false
-                  },
-                  "photo": {
-                    "description": "Contact's photo",
-                    "type": "string",
-                    "format": "binary"
+                    "example": "5"
                   }
                 }
               }
@@ -382,7 +352,7 @@
         },
         "responses": {
           "200": {
-            "description": "Successfully updated contact!",
+            "description": "Successfully updated information about used water!",
             "content": {
               "application/json": {
                 "schema": {
@@ -399,11 +369,11 @@
                     },
                     "message": {
                       "type": "string",
-                      "example": "Successfully updated contact!"
+                      "example": "Successfully updated information about used water!"
                     },
                     "data": {
                       "type": "object",
-                      "$ref": "#/components/schemas/contacts"
+                      "$ref": "#/components/schemas/water"
                     }
                   }
                 }
@@ -419,9 +389,9 @@
         "tags": [
           "Contacts"
         ],
-        "summary": "Delete contact",
-        "operationId": "deleteContact",
-        "description": "Delete a contact by ID",
+        "summary": "Delete water",
+        "operationId": "deleteWater",
+        "description": "Delete a water by ID",
         "security": [
           {
             "bearerAuth": []
@@ -435,12 +405,12 @@
             "schema": {
               "type": "string"
             },
-            "description": "The ID of the contact to delete"
+            "description": "The ID of the water to delete"
           }
         ],
         "responses": {
           "200": {
-            "description": "Successfully deleted contact!",
+            "description": "Successfully deleted information about used water!",
             "content": {
               "application/json": {
                 "schema": {
@@ -456,7 +426,7 @@
                     },
                     "message": {
                       "type": "string",
-                      "example": "Successfully deleted contact!"
+                      "example": "Successfully deleted information about used water!"
                     }
                   }
                 }
@@ -478,7 +448,7 @@
       }
     },
     "schemas": {
-      "contacts": {
+      "water": {
         "type": "object",
         "required": [
           "_id",
@@ -493,40 +463,30 @@
             "type": "string",
             "example": "65e4decdd286b30065d54af9"
           },
-          "name": {
-            "description": "Contact's name",
+          "ml": {
+            "description": "Ml drunk",
             "type": "string",
-            "example": "John Doe"
+            "example": "350"
           },
-          "phoneNumber": {
-            "description": "Contacts's phone number",
+          "day": {
+            "description": "Day when the water was drunk",
             "type": "string",
-            "example": "xxx-xxx-xxxx"
+            "example": "5"
           },
-          "email": {
-            "description": "Contact's email",
+          "monthNumber": {
+            "description": "Month when the water was drunk",
             "type": "string",
-            "example": "name@example.com"
+            "example": "5"
           },
-          "contactType": {
-            "description": "Contact's type",
+          "year": {
+            "description": "Year when the water was drunk",
             "type": "string",
-            "enum": [
-              "work",
-              "home",
-              "personal"
-            ],
-            "example": "home"
+            "example": "2024"
           },
-          "isFavourite": {
-            "description": "Whether is favorite",
-            "type": "boolean",
-            "example": false
-          },
-          "photo": {
-            "description": "Link to contact's photo",
+          "time": {
+            "description": "Time when the water was drunk",
             "type": "string",
-            "example": "<https://res.cloudinary.com/uqwgdu/image/upload/image.png>"
+            "example": "10:00"
           }
         }
       }

@@ -1,6 +1,6 @@
-import { monthList } from '../constants/contacts-constants.js';
-import { yearList } from '../constants/contacts-constants.js';
-import { getMaxDaysInMonth } from '../constants/contacts-constants.js';
+import { monthList } from '../constants/time-constants.js';
+import { yearList } from '../constants/time-constants.js';
+import { getMaxDaysInMonth } from '../constants/time-constants.js';
 // const parseBoolean = (value) => {
 //   if (typeof value !== 'string') return;
 //   if (!['true', 'false'].includes(value)) return;

@@ -6,7 +6,7 @@ import {
   putWaterController,
   patchWaterController,
   deleteController,
-} from '../controllers/contacts-controllers.js';
+} from '../controllers/water-controllers.js';
 import ctrlWrapper from '../utils/ctrlWrapper.js';
 import isValidId from '../middlewares/isValidId.js';
 import validateBody from '../middlewares/validateBody.js';

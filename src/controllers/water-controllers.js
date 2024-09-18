@@ -2,19 +2,18 @@ import createHttpError from 'http-errors';
 import {
   getWater,
   getWaterById,
-  // getWaterDay,
   addWater,
   upsertWater,
   deleteWater,
-} from '../services/contact-services.js';
+} from '../services/water-services.js';
 import parsePaginationParams from '../utils/parsePaginationParams.js';
-// import parseSortParams from '../utils/parseSortParams.js';
 import parseContactsFilterParams from '../utils/parseContactsFilterParams.js';
-import { monthList, yearList } from '../constants/contacts-constants.js';
 import {
+  monthList,
+  yearList,
   getMaxDaysInMonth,
   getNumberOfMonth,
-} from '../constants/contacts-constants.js';
+} from '../constants/time-constants.js';
 import { sortByConstants, sortOrderConstants } from '../constants/constants.js';
 import Water from '../db/models/Water.js';
 
@@ -84,48 +83,6 @@ export const getWaterByIdController = async (req, res, next) => {
   });
 };
 
-// export const getWaterByDayController = async (req, res) => {
-//   const { _id: userId } = req.user;
-//   const { day, month, year } = req.query;
-//   console.log('day', day, 'month', month, 'year', year);
-
-//   if (getMaxDaysInMonth(month) < day) {
-//     return res
-//       .status(400)
-//       .json({ status: 400, message: 'Invalid day parameter' });
-//   }
-//   if (!monthList.includes(month)) {
-//     return res
-//       .status(400)
-//       .json({ status: 400, message: 'Invalid month parameter' });
-//   }
-//   if (!yearList.includes(parseInt(year, 10))) {
-//     return res
-//       .status(400)
-//       .json({ status: 400, message: 'Invalid year parameter' });
-//   }
-
-//   const sortBy = sortByConstants[2];
-//   const sortOrder = sortOrderConstants[0];
-
-//   const filter = {
-//     ...parseContactsFilterParams(req.query),
-//     userId,
-//   };
-
-//   const data = await getWaterDay({
-//     sortBy,
-//     sortOrder,
-//     filter,
-//   });
-
-//   res.json({
-//     status: 200,
-//     message: `Successfully found used water for the day ${day}`,
-//     data,
-//   });
-// };
-
 export const addWaterController = async (req, res) => {
   const { _id: userId } = req.user;
   const { day, year, month } = req.query;
@@ -148,21 +105,6 @@ export const addWaterController = async (req, res) => {
   }
   const oldDataTimestamp = await Water.find({ userId }, 'timestamp');
   const listOfExistingTimestamps = oldDataTimestamp.map((doc) => doc.timestamp);
-
-  // const {
-  //   time: oldTime,
-  //   day: oldDay,
-  //   month: oldMonth,
-  //   year: oldYear,
-  // } = currentWaterData;
-
-  // console.log(currentWaterData);
-
-  // if ((oldTime, oldDay, oldMonth, oldYear)) {
-  //   return res
-  //     .status(400)
-  //     .json({ status: 400, message: 'This time is already used' });
-  // }
 
   const monthNumber = getNumberOfMonth(month);
   const paddedDay = String(day).padStart(2, '0');
