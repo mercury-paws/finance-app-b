@@ -47,6 +47,14 @@ export default function setupServer() {
     console.log(`Time: ${new Date().toLocaleString()}`);
     next();
   });
+
+app.get("/api/health", (req, res) => {
+    res.json({ status: "ok", message: "Server is running" });
+  });
+  app.head("/api/health", (req, res) => {
+  res.status(200).end();
+});
+
   app.use(router);
 
   app.use(notFoundHandler);
