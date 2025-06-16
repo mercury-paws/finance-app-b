@@ -15,7 +15,8 @@ import {
   getNumberOfMonth,
 } from '../constants/time-constants.js';
 import { sortByConstants, sortOrderConstants } from '../constants/constants.js';
-import Water from '../db/models/Water.js';
+import Finance from '../db/models/Finance.js';
+
 
 export const getAllWaterController = async (req, res, next) => {
   const { _id: userId } = req.user;
@@ -84,9 +85,11 @@ export const getWaterByIdController = async (req, res, next) => {
 };
 
 export const addWaterController = async (req, res) => {
+  console.log("BODY:", req.body);
+
   const { _id: userId } = req.user;
   const { day, year, month } = req.query;
-  const { ml, time } = req.body;
+  const { spent, note, time } = req.body;
   if (getMaxDaysInMonth(month, year) < day || !day) {
     return res
       .status(400)
@@ -103,7 +106,7 @@ export const addWaterController = async (req, res) => {
       .status(400)
       .json({ status: 400, message: 'Invalid year parameter' });
   }
-  const oldDataTimestamp = await Water.find({ userId }, 'timestamp');
+  const oldDataTimestamp = await Finance.find({ userId }, 'timestamp');
   const listOfExistingTimestamps = oldDataTimestamp.map((doc) => doc.timestamp);
 
   const monthNumber = getNumberOfMonth(month);
@@ -119,7 +122,8 @@ export const addWaterController = async (req, res) => {
   }
 
   const data = await addWater({
-    ml,
+    spent,
+    note,
     time,
     fullTime,
     timestamp,
@@ -167,7 +171,7 @@ export const patchWaterController = async (req, res) => {
   const { _id: userId } = req.user;
   const { time } = req.body;
 
-  const currentWaterData = await Water.findOne({ _id: id, userId });
+  const currentWaterData = await Finance.findOne({ _id: id, userId });
 
   let { fullTime } = currentWaterData;
 

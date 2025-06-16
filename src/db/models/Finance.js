@@ -8,12 +8,19 @@ import {
 } from '../../constants/time-constants.js';
 import { mongooseSaveError, setUpdateSettings } from './hooks.js';
 
-const waterSchema = new Schema(
+const financeSchema = new Schema(
   {
-    ml: {
+    spent: {
       type: String,
       required: true,
-      validate: mlRegexp,
+      validate: {
+        validator: (v) => /^\d{1,4}$/.test(v),
+        message: 'ml must be a number from 0 to 1000',
+      }
+    },
+    note: {
+      type: String,
+      required: true,
     },
     day: {
       type: String,
@@ -92,9 +99,9 @@ const waterSchema = new Schema(
   },
 );
 
-waterSchema.post('save', mongooseSaveError);
-waterSchema.pre('findOneAndUpdate', setUpdateSettings);
-waterSchema.post('findOneAndUpdate', mongooseSaveError);
+financeSchema.post('save', mongooseSaveError);
+financeSchema.pre('findOneAndUpdate', setUpdateSettings);
+financeSchema.post('findOneAndUpdate', mongooseSaveError);
 
-const Water = model('water', waterSchema);
-export default Water;
+const Finance = model('finance', financeSchema);
+export default Finance;

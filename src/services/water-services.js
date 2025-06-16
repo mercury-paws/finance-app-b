@@ -1,5 +1,5 @@
 // import createHttpError from 'http-errors';
-import Water from '../db/models/Water.js';
+import Finance from '../db/models/Finance.js';
 import calcPaginationData from '../utils/calcPaginationData.js';
 
 export const getWater = async ({
@@ -9,7 +9,7 @@ export const getWater = async ({
   sortOrder,
   filter,
 }) => {
-  const databaseQuery = Water.find();
+  const databaseQuery = Finance.find();
 
   if (filter.day) {
     databaseQuery.where('day').equals(filter.day);
@@ -27,7 +27,7 @@ export const getWater = async ({
 
   const items = await databaseQuery.sort({ [sortBy]: sortOrder });
 
-  const totalItems = await Water.find().merge(databaseQuery).countDocuments();
+  const totalItems = await Finance.find().merge(databaseQuery).countDocuments();
 
   const { totalPages, hasNextPage, hasPreviousPage } = calcPaginationData(
     totalItems,
@@ -76,9 +76,9 @@ export const getWater = async ({
 //   };
 // };
 
-export const getWaterById = (filter) => Water.findOne(filter);
+export const getWaterById = (filter) => Finance.findOne(filter);
 
-export const addWater = (data) => Water.create(data);
+export const addWater = (data) => Finance.create(data);
 
 export const upsertWater = async (
   filter,
@@ -89,7 +89,7 @@ export const upsertWater = async (
   // if (photo) {
   //   data.photo = photo;
   // }
-  const result = await Water.findOneAndUpdate(filter, data, {
+  const result = await Finance.findOneAndUpdate(filter, data, {
     new: true,
     runValidators: true,
     includeResultMetadata: true,
@@ -104,4 +104,4 @@ export const upsertWater = async (
   };
 };
 
-export const deleteWater = (filter) => Water.findOneAndDelete(filter);
+export const deleteWater = (filter) => Finance.findOneAndDelete(filter);
