@@ -81,9 +81,9 @@ export const userUpdateSchema = Joi.object({
     'number.max': 'Sport time should be at most 24 hours',
     'any.required': 'Sport time is required',
   }),
-  waterVolume: Joi.number().min(0.5).max(15).required().messages({
+  planToSpend: Joi.number().min(0.5).max(60000).required().messages({
     'number.min': 'Water volume should be at least 0.5 liters',
-    'number.max': 'Water volume should be at most 15 liters',
+    'number.max': 'Water volume should be at most 60000 liters',
     'any.required': 'Water volume is required',
   }),
   photo: Joi.any().optional(),

@@ -147,7 +147,7 @@ export const updateUserController = async (req, res) => {
     gender: updatedUser.gender,
     weight: updatedUser.weight,
     sportTime: updatedUser.sportTime,
-    waterVolume: updatedUser.waterVolume,
+    planToSpend: updatedUser.planToSpend,
     photo: updatedUser.photo,
   };
 
@@ -202,7 +202,7 @@ export const signinController = async (req, res) => {
       accessToken: session.accessToken,
       name: user.name,
       email: user.email,
-      waterVolume: user.waterVolume,
+      planToSpend: user.planToSpend,
       photo: user.photo,
     },
   });
@@ -260,7 +260,7 @@ export const refreshController = async (req, res) => {
       gender: user.gender,
       weight: user.weight,
       sportTime: user.sportTime,
-      waterVolume: user.waterVolume,
+      planToSpend: user.planToSpend,
       photo: user.photo,
     },
   });

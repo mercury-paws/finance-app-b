@@ -47,12 +47,12 @@ const userSchema = new Schema(
       min: 0.1,
       max: 24,
     },
-    waterVolume: {
+    planToSpend: {
       type: Number,
       required: false,
       unique: false,
       min: 1,
-      max: 15,
+      max: 60000,
     },
     photo: {
       type: String,

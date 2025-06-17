@@ -14,8 +14,8 @@ const financeSchema = new Schema(
       type: String,
       required: true,
       validate: {
-        validator: (v) => /^\d{1,4}$/.test(v),
-        message: 'ml must be a number from 0 to 1000',
+        validator: (v) => /^\d{1,5}$/.test(v),
+        message: 'ml must be a number from 0 to 50000',
       }
     },
     note: {
