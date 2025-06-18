@@ -27,25 +27,9 @@ const userSchema = new Schema(
       default: false,
       required: true,
     },
-    gender: {
-      type: String,
-      required: false,
-      values: genderList,
-      unique: false,
-    },
-    weight: {
-      type: Number,
-      required: false,
-      unique: false,
-      min: 10,
-      max: 250,
-    },
-    sportTime: {
-      type: Number,
-      required: false,
-      unique: false,
-      min: 0.1,
-      max: 24,
+    note: {
+      type: Map,
+      of: Number,
     },
     planToSpend: {
       type: Number,

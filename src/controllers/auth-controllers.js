@@ -133,6 +133,12 @@ export const updateUserController = async (req, res) => {
     updateData = { ...updateData, photo };
   }
 
+  let note = updateData.note;
+
+  if (note && typeof note === 'object' && !Array.isArray(note)) {
+    updateData.note = note;
+  };
+
   const { result: updatedUser } = await upsertUser(filter, updateData, {
     upsert: true,
   });
@@ -144,10 +150,8 @@ export const updateUserController = async (req, res) => {
   const data = {
     name: updatedUser.name,
     email: updatedUser.email,
-    gender: updatedUser.gender,
-    weight: updatedUser.weight,
-    sportTime: updatedUser.sportTime,
-    planToSpend: updatedUser.planToSpend,
+    note: updatedUser.note,
+   planToSpend: updatedUser.planToSpend,
     photo: updatedUser.photo,
   };
 
@@ -203,6 +207,7 @@ export const signinController = async (req, res) => {
       name: user.name,
       email: user.email,
       planToSpend: user.planToSpend,
+      note: user.note,
       photo: user.photo,
     },
   });
@@ -257,10 +262,8 @@ export const refreshController = async (req, res) => {
       accessToken: newSession.accessToken,
       name: user.name,
       email: user.email,
-      gender: user.gender,
-      weight: user.weight,
-      sportTime: user.sportTime,
       planToSpend: user.planToSpend,
+      note: user.note,
       photo: user.photo,
     },
   });

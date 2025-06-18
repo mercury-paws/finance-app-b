@@ -64,27 +64,19 @@ export const userUpdateSchema = Joi.object({
       'Email should be of the following format: name@example.com',
     'any.required': 'Email is required',
   }),
-  gender: Joi.string()
-    .valid(...genderList)
-    .required()
-    .messages({
-      'any.only': 'Gender should be either male or female',
-      'any.required': 'Gender is required',
+    note: Joi.object().pattern(
+      Joi.string(),
+      Joi.number().min(1).max(25000).messages({
+        'number.min': 'Each value should be at least 1czk',
+        'number.max': 'Each value should be at most 25000czk',
+      })
+    ).required().messages({
+      'any.required': 'Note object is required',
     }),
-  weight: Joi.number().min(10).max(250).required().messages({
-    'number.min': 'Weight should be at least 10kg',
-    'number.max': 'Weight should be at most 250kg',
-    'any.required': 'Weight is required',
-  }),
-  sportTime: Joi.number().min(0.1).max(24).required().messages({
-    'number.min': 'Sport time should be at least 0.1 hours',
-    'number.max': 'Sport time should be at most 24 hours',
-    'any.required': 'Sport time is required',
-  }),
-  planToSpend: Joi.number().min(0.5).max(60000).required().messages({
-    'number.min': 'Water volume should be at least 0.5 liters',
-    'number.max': 'Water volume should be at most 60000 liters',
-    'any.required': 'Water volume is required',
-  }),
+    planToSpend: Joi.number().min(0.5).max(60000).required().messages({
+      'number.min': 'Water volume should be at least 0.5 liters',
+      'number.max': 'Water volume should be at most 60000 liters',
+      'any.required': 'Water volume is required',
+    }),
   photo: Joi.any().optional(),
 });
