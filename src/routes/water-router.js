@@ -6,6 +6,7 @@ import {
   putWaterController,
   patchWaterController,
   deleteController,
+  getFinByParamController,
 } from '../controllers/water-controllers.js';
 import ctrlWrapper from '../utils/ctrlWrapper.js';
 import isValidId from '../middlewares/isValidId.js';
@@ -20,6 +21,7 @@ const waterRouter = Router();
 
 waterRouter.use(authenticate);
 waterRouter.get('/', ctrlWrapper(getAllWaterController));
+// waterRouter.get('/chart', ctrlWrapper(getFinByParamController));
 
 waterRouter.get('/:id', isValidId, ctrlWrapper(getWaterByIdController));
 

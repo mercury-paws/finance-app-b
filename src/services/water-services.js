@@ -105,3 +105,41 @@ export const upsertWater = async (
 };
 
 export const deleteWater = (filter) => Finance.findOneAndDelete(filter);
+
+export const getFinByParam = async ({
+  sortBy,
+  sortOrder,
+  filter,
+}) => {
+  const databaseQuery = Finance.find();
+
+  if (filter.day) {
+    databaseQuery.where('day').equals(filter.day);
+  }
+  if (filter.month) {
+    databaseQuery.where('month').equals(filter.month);
+  }
+  if (filter.year) {
+    databaseQuery.where('year').equals(filter.year);
+  }
+
+  if (filter.userId) {
+    databaseQuery.where('userId').equals(filter.userId);
+  }
+
+  const items = await databaseQuery.sort({ [sortBy]: sortOrder });
+
+  const totalItems = await Finance.find().merge(databaseQuery).countDocuments();
+
+  const { totalPages, hasNextPage, hasPreviousPage } = calcPaginationData(
+    totalItems,
+  );
+
+  return {
+    items,
+    totalItems,
+    totalPages,
+    hasPreviousPage,
+    hasNextPage,
+  };
+};

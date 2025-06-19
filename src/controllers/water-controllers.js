@@ -5,6 +5,7 @@ import {
   addWater,
   upsertWater,
   deleteWater,
+  getFinByParam,
 } from '../services/water-services.js';
 import parsePaginationParams from '../utils/parsePaginationParams.js';
 import parseContactsFilterParams from '../utils/parseContactsFilterParams.js';
@@ -213,3 +214,47 @@ export const deleteController = async (req, res) => {
     _id: id,
   });
 };
+
+export const getFinByParamController = async (req, res, next) => {
+  const { _id: userId } = req.user;
+  const { day, month, year } = req.body;
+  console.log('day', day, 'month', month, 'year', year);
+
+  if (month && day && getMaxDaysInMonth(month) < day) {
+    return res
+      .status(400)
+      .json({ status: 400, message: 'Invalid day parameter' });
+  }
+
+  if (month && !monthList.includes(month)) {
+    return res
+      .status(400)
+      .json({ status: 400, message: 'Invalid month parameter' });
+  }
+
+  if (year && !yearList.includes(parseInt(year, 10))) {
+    return res
+      .status(400)
+      .json({ status: 400, message: 'Invalid year parameter' });
+  }
+
+  const sortBy = sortByConstants[2];
+  const sortOrder = sortOrderConstants[0];
+
+  const filter = {
+    ...parseContactsFilterParams(req.body),
+    userId,
+  };
+
+  const data = await getFinByParam({
+    sortBy,
+    sortOrder,
+    filter,
+  });
+  res.json({
+    status: 200,
+    message: 'Successfully found fin per param',
+    data,
+  });
+};
+
