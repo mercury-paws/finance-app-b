@@ -22,6 +22,10 @@ const financeSchema = new Schema(
       type: String,
       required: true,
     },
+    details: {
+      type: String,
+      required: false,
+    },
     day: {
       type: String,
       min: [1, 'Must be at least 1, got {VALUE}'],

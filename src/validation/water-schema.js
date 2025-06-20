@@ -13,6 +13,9 @@ export const waterAddSchema = Joi.object({
   note: Joi.string().required().messages({
     'string.pattern.base': 'Add spent destination',
   }),
+  details: Joi.string().messages({
+    'string.pattern.base': 'Add details',
+  }),
 });
 
 export const waterUpdateSchema = Joi.object({
@@ -26,5 +29,8 @@ export const waterUpdateSchema = Joi.object({
   }),
   note: Joi.string().required().messages({
     'string.pattern.base': 'Add spent destination',
+  }),
+  details: Joi.string().messages({
+    'string.pattern.base': 'Add details',
   }),
 });

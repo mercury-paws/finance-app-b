@@ -90,7 +90,7 @@ export const addWaterController = async (req, res) => {
 
   const { _id: userId } = req.user;
   const { day, year, month } = req.query;
-  const { spent, note, time } = req.body;
+  const { spent, note, time, details } = req.body;
   if (getMaxDaysInMonth(month, year) < day || !day) {
     return res
       .status(400)
@@ -126,6 +126,7 @@ export const addWaterController = async (req, res) => {
     spent,
     note,
     time,
+    details,
     fullTime,
     timestamp,
     day,
