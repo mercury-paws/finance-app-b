@@ -11,6 +11,10 @@ const nodemailerConfig = {
     user: UKR_NET_EMAIL,
     pass: UKR_NET_PASSWORD,
   },
+  // tls: {
+  //   // This allows self-signed certs — for development only
+  //   rejectUnauthorized: false,
+  // },
 };
 
 const transport = nodemailer.createTransport(nodemailerConfig);

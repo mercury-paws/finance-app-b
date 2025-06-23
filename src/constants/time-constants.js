@@ -23,8 +23,8 @@ function generateYears() {
 export const yearList = generateYears();
 export const timeRegexp = /^(?:[01]\d|2[0-3]):[0-5]\d$/;
 export const mlRegexp = /^(?:[0-9]|[1-9][0-9]{0,2}|1000)$/;
-
 export const emailRegexp = /[-.\w]+@([\w-]+\.)+[\w-]+/;
+export const stringRegexp = /^[a-zA-Z0-9\s.,!?'"()-]*$/;
 
 export const validateEmail = {
   validator: function (v) {

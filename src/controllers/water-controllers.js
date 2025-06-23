@@ -18,7 +18,6 @@ import {
 import { sortByConstants, sortOrderConstants } from '../constants/constants.js';
 import Finance from '../db/models/Finance.js';
 
-
 export const getAllWaterController = async (req, res, next) => {
   const { _id: userId } = req.user;
   const { day, month, year } = req.query;
@@ -86,7 +85,7 @@ export const getWaterByIdController = async (req, res, next) => {
 };
 
 export const addWaterController = async (req, res) => {
-  console.log("BODY:", req.body);
+  console.log('BODY:', req.body);
 
   const { _id: userId } = req.user;
   const { day, year, month } = req.query;
@@ -258,4 +257,3 @@ export const getFinByParamController = async (req, res, next) => {
     data,
   });
 };
-
