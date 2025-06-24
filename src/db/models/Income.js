@@ -8,24 +8,8 @@ import {
 } from '../../constants/time-constants.js';
 import { mongooseSaveError, setUpdateSettings } from './hooks.js';
 
-const financeSchema = new Schema(
+const incomeSchema = new Schema(
   {
-    spent: {
-      type: String,
-      required: true,
-      validate: {
-        validator: (v) => {
-          if (typeof v !== 'string') return false;
-
-          if (!/^\d+$/.test(v)) return false;
-
-          const num = Number(v);
-
-          // Final check: number must be in allowed range
-          return num >= 0 && num <= 50000;
-        },
-      },
-    },
     income: {
       type: String,
       required: false,
@@ -44,27 +28,7 @@ const financeSchema = new Schema(
       type: String,
       required: true,
     },
-    details: {
-      type: String,
-      required: false,
-    },
-    day: {
-      type: String,
-      min: [1, 'Must be at least 1, got {VALUE}'],
-      max: [31, 'Must be at most 28-31, got {VALUE}'],
-      required: [true, 'Day is required'],
-      unique: false,
-      validate: {
-        validator: function (value) {
-          const month = this.month;
-          const year = this.year;
-          if (!month) return false;
-          const maxDays = getMaxDaysInMonth(month, year);
-          return value >= 1 && value <= maxDays;
-        },
-        message: (props) => `Invalid day ${props.value} for the provided month`,
-      },
-    },
+
     month: {
       type: String,
       required: [true, 'Month is required'],
@@ -90,11 +54,7 @@ const financeSchema = new Schema(
         message: '{VALUE} is not supported',
       },
     },
-    time: {
-      type: String,
-      required: [true, 'Time is required'],
-      validate: timeRegexp,
-    },
+
     fullTime: {
       type: Date,
       required: [true, 'Time ISO is required'],
@@ -125,9 +85,9 @@ const financeSchema = new Schema(
   },
 );
 
-financeSchema.post('save', mongooseSaveError);
-financeSchema.pre('findOneAndUpdate', setUpdateSettings);
-financeSchema.post('findOneAndUpdate', mongooseSaveError);
+incomeSchema.post('save', mongooseSaveError);
+incomeSchema.pre('findOneAndUpdate', setUpdateSettings);
+incomeSchema.post('findOneAndUpdate', mongooseSaveError);
 
-const Finance = model('finance', financeSchema);
-export default Finance;
+const Income = model('income', incomeSchema);
+export default Income;

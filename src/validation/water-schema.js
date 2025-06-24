@@ -1,9 +1,5 @@
 import Joi from 'joi';
-import {
-  timeRegexp,
-  mlRegexp,
-  stringRegexp,
-} from '../constants/time-constants.js';
+import { timeRegexp, stringRegexp } from '../constants/time-constants.js';
 
 export const waterAddSchema = Joi.object({
   spent: Joi.string()
@@ -31,7 +27,7 @@ export const waterUpdateSchema = Joi.object({
     .pattern(/^\d{1,5}$/)
     .required()
     .messages({
-      'string.pattern.base': 'ml should be of the following format: 0-50000',
+      'string.pattern.base': 'should be of the following format: 0-50000',
       'any.required': 'ml is required',
     }),
   time: Joi.string().pattern(timeRegexp).required().messages({
@@ -44,5 +40,33 @@ export const waterUpdateSchema = Joi.object({
   details: Joi.string().pattern(stringRegexp).allow('').max(150).messages({
     'string.base': 'Details must be a string',
     'string.max': 'Too long! Max 150 characters.',
+  }),
+});
+
+export const incomeUpdateSchema = Joi.object({
+  income: Joi.string()
+    .pattern(/^\d{1,5}$/)
+    .required()
+    .messages({
+      'string.pattern.base':
+        'income should be of the following format: 0-50000',
+      'any.required': 'income is required',
+    }),
+  note: Joi.string().pattern(stringRegexp).required().messages({
+    'string.pattern.base': 'Add spent destination',
+  }),
+});
+
+export const incomeAddSchema = Joi.object({
+  income: Joi.string()
+    .pattern(/^\d{1,5}$/)
+    .required()
+    .messages({
+      'string.pattern.base':
+        'income should be of the following format: 0-50000',
+      'any.required': 'income is required',
+    }),
+  note: Joi.string().pattern(stringRegexp).required().messages({
+    'string.pattern.base': 'note is required',
   }),
 });
