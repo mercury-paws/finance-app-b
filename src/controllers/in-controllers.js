@@ -41,6 +41,7 @@ export const getAllInController = async (req, res, next) => {
   };
   const { page: parsedPage, perPage: parsedPerPage } = parsePaginationParams({
     month,
+    year,
   });
 
   const data = await getIn({
