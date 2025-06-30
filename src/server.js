@@ -8,10 +8,12 @@ import notFoundHandler from './middlewares/notFoundHandler.js';
 import errorHandler from './middlewares/errorHandler.js';
 import { PUBLIC_DIR } from './constants/path.js';
 import swaggerDocs from './middlewares/swaggerDocs.js';
+import helmet from 'helmet';
 
 const PORT = Number(env('PORT', '3000'));
 export default function setupServer() {
   const app = express();
+  app.use(helmet());
 
   const logger = pino({
     transport: {
