@@ -40,6 +40,7 @@ export default function setupServer() {
 
   app.use(logger);
   app.use(express.json());
+  app.use(express.urlencoded({ extended: true }));
   app.use(cookieParser());
   app.use(express.static(PUBLIC_DIR));
   app.use('/api-docs', swaggerDocs());
