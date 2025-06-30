@@ -28,7 +28,7 @@ export default function setupServer() {
   // };
 
   const corsOptions = {
-    origin: 'https://finance-app-f.vercel.app/',
+    origin: 'https://finance-app-f.vercel.app',
     // origin: 'http://localhost:5173',
     credentials: true,
     methods: ['GET', 'POST', 'PATCH', 'DELETE'],
