@@ -13,7 +13,7 @@ import validateBody from '../middlewares/validateBody.js';
 import {
   incomeAddSchema,
   incomeUpdateSchema,
-} from '../validation/water-schema.js';
+} from '../validation/spent-schema.js';
 import authenticate from '../middlewares/authenticate.js';
 
 const inRouter = Router();

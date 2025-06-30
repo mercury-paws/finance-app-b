@@ -1,12 +1,12 @@
 import createHttpError from 'http-errors';
 import {
-  getWater,
-  getWaterById,
-  addWater,
-  upsertWater,
-  deleteWater,
+  getSpent,
+  getSpentById,
+  addSpent,
+  upsertSpent,
+  deleteSpent,
   getFinByParam,
-} from '../services/water-services.js';
+} from '../services/spent-services.js';
 import parsePaginationParams from '../utils/parsePaginationParams.js';
 import parseContactsFilterParams from '../utils/parseContactsFilterParams.js';
 import {
@@ -18,7 +18,7 @@ import {
 import { sortByConstants, sortOrderConstants } from '../constants/constants.js';
 import Finance from '../db/models/Finance.js';
 
-export const getAllWaterController = async (req, res, next) => {
+export const getAllSpentController = async (req, res, next) => {
   const { _id: userId } = req.user;
   const { day, month, year } = req.query;
   console.log('day', day, 'month', month, 'year', year);
@@ -52,7 +52,7 @@ export const getAllWaterController = async (req, res, next) => {
     month,
   });
 
-  const data = await getWater({
+  const data = await getSpent({
     page: parsedPage,
     perPage: parsedPerPage,
     sortBy,
@@ -66,10 +66,10 @@ export const getAllWaterController = async (req, res, next) => {
   });
 };
 
-export const getWaterByIdController = async (req, res, next) => {
+export const getSpentByIdController = async (req, res, next) => {
   const { id } = req.params;
   const { _id: userId } = req.user;
-  const data = await getWaterById({ _id: id, userId });
+  const data = await getSpentById({ _id: id, userId });
   console.log({ id, userId });
   if (!data) {
     throw createHttpError(
@@ -84,7 +84,7 @@ export const getWaterByIdController = async (req, res, next) => {
   });
 };
 
-export const addWaterController = async (req, res) => {
+export const addSpentController = async (req, res) => {
   console.log('BODY:', req.body);
 
   const { _id: userId } = req.user;
@@ -121,7 +121,7 @@ export const addWaterController = async (req, res) => {
       .json({ status: 400, message: 'This time is already used' });
   }
 
-  const data = await addWater({
+  const data = await addSpent({
     spent,
     note,
     time,
@@ -147,7 +147,7 @@ export const putWaterController = async (req, res) => {
   const { id } = req.params;
   const { _id: userId } = req.user;
 
-  const data = await upsertWater(
+  const data = await upsertSpent(
     { _id: id, userId },
     req.body,
     req.query,
@@ -167,7 +167,7 @@ export const putWaterController = async (req, res) => {
   });
 };
 
-export const patchWaterController = async (req, res) => {
+export const patchSpentController = async (req, res) => {
   const { id } = req.params;
   const { _id: userId } = req.user;
   const { time } = req.body;
@@ -187,7 +187,7 @@ export const patchWaterController = async (req, res) => {
     timestamp,
   };
 
-  const data = await upsertWater({ _id: id, userId }, updatedData);
+  const data = await upsertSpent({ _id: id, userId }, updatedData);
 
   if (!data) {
     throw createHttpError(404, 'Information about used water not found');
@@ -202,7 +202,7 @@ export const patchWaterController = async (req, res) => {
 export const deleteController = async (req, res) => {
   const { id } = req.params;
   const { _id: userId } = req.user;
-  const data = await deleteWater({ _id: id, userId });
+  const data = await deleteSpent({ _id: id, userId });
 
   if (!data) {
     throw createHttpError(404, 'Information not found');

@@ -28,11 +28,11 @@ export default function setupServer() {
   // };
 
   const corsOptions = {
-    // origin: 'https://finance-app-f.vercel.app',
-    origin: 'http://localhost:5173',
+    origin: 'https://finance-app-f.vercel.app/',
+    // origin: 'http://localhost:5173',
     credentials: true,
-    methods: ['GET', 'POST', 'PATCH', 'DELETE'], // amended put to patch
-    allowedHeaders: ['Content-Type', 'Authorization'], // added headers
+    methods: ['GET', 'POST', 'PATCH', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
   };
 
   app.use(cors(corsOptions));
@@ -49,12 +49,12 @@ export default function setupServer() {
     next();
   });
 
-app.get("/api/health", (req, res) => {
-    res.json({ status: "ok", message: "Server is running" });
+  app.get('/api/health', (req, res) => {
+    res.json({ status: 'ok', message: 'Server is running' });
   });
-  app.head("/api/health", (req, res) => {
-  res.status(200).end();
-});
+  app.head('/api/health', (req, res) => {
+    res.status(200).end();
+  });
 
   app.use(router);
 

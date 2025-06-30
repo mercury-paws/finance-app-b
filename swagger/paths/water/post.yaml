@@ -1,7 +1,7 @@
 tags:
   - Water
 summary: Create used water
-operationId: addWater
+operationId: addSpent
 description: 'Add a used water with payload'
 security:
   - bearerAuth: []

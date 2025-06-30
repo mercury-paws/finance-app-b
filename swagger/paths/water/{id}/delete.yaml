@@ -1,7 +1,7 @@
 tags:
   - Contacts
 summary: Delete water
-operationId: deleteWater
+operationId: deleteSpent
 description: 'Delete a water by ID'
 security:
   - bearerAuth: []

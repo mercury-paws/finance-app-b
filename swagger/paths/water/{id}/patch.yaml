@@ -1,7 +1,7 @@
 tags:
   - Water
 summary: Update water
-operationId: upsertWater
+operationId: upsertSpent
 description: 'Update a used water by ID with payload'
 security:
   - bearerAuth: []

@@ -2,7 +2,7 @@
 import Finance from '../db/models/Finance.js';
 import calcPaginationData from '../utils/calcPaginationData.js';
 
-export const getWater = async ({
+export const getSpent = async ({
   page,
   perPage,
   sortBy,
@@ -46,7 +46,7 @@ export const getWater = async ({
   };
 };
 
-// export const getWaterDay = async ({ sortBy, sortOrder, filter }) => {
+// export const getSpentDay = async ({ sortBy, sortOrder, filter }) => {
 //   const databaseQuery = Water.find();
 
 //   if (filter.day) {
@@ -76,11 +76,11 @@ export const getWater = async ({
 //   };
 // };
 
-export const getWaterById = (filter) => Finance.findOne(filter);
+export const getSpentById = (filter) => Finance.findOne(filter);
 
-export const addWater = (data) => Finance.create(data);
+export const addSpent = (data) => Finance.create(data);
 
-export const upsertWater = async (
+export const upsertSpent = async (
   filter,
   data,
   options = {},
@@ -104,13 +104,9 @@ export const upsertWater = async (
   };
 };
 
-export const deleteWater = (filter) => Finance.findOneAndDelete(filter);
+export const deleteSpent = (filter) => Finance.findOneAndDelete(filter);
 
-export const getFinByParam = async ({
-  sortBy,
-  sortOrder,
-  filter,
-}) => {
+export const getFinByParam = async ({ sortBy, sortOrder, filter }) => {
   const databaseQuery = Finance.find();
 
   if (filter.day) {
@@ -131,9 +127,8 @@ export const getFinByParam = async ({
 
   const totalItems = await Finance.find().merge(databaseQuery).countDocuments();
 
-  const { totalPages, hasNextPage, hasPreviousPage } = calcPaginationData(
-    totalItems,
-  );
+  const { totalPages, hasNextPage, hasPreviousPage } =
+    calcPaginationData(totalItems);
 
   return {
     items,

@@ -1,7 +1,7 @@
 tags:
   - Water
 summary: Get water by id
-operationId: getWaterById
+operationId: getSpentById
 description: 'Get water by id'
 security:
   - bearerAuth: []
