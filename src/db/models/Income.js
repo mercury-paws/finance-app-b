@@ -67,7 +67,7 @@ const incomeSchema = new Schema(
         },
         message: 'Event date must be in ISO 8601 format (YYYY-MM-DDTHH:MM:SSZ)',
       },
-      unique: true,
+      unique: false,
     },
     timestamp: {
       type: String,

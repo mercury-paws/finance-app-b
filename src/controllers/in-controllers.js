@@ -91,18 +91,18 @@ export const addInController = async (req, res) => {
   }
 
   const oldDataTimestamp = await Income.find({ userId }, 'timestamp');
-  const listOfExistingTimestamps = oldDataTimestamp.map((doc) => doc.timestamp);
+  // const listOfExistingTimestamps = oldDataTimestamp.map((doc) => doc.timestamp);
 
   const monthNumber = getNumberOfMonth(month);
   const paddedMonth = String(monthNumber).padStart(2, '0');
   const fullTime = new Date(`${year}-${paddedMonth}`);
   const timestamp = fullTime.getTime();
 
-  if (listOfExistingTimestamps.includes(String(timestamp))) {
-    return res
-      .status(400)
-      .json({ status: 400, message: 'This time is already used' });
-  }
+  // if (listOfExistingTimestamps.includes(String(timestamp))) {
+  //   return res
+  //     .status(400)
+  //     .json({ status: 400, message: 'This time is already used' });
+  // }
 
   const data = await addIn({
     income,
