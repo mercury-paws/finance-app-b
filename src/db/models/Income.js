@@ -18,7 +18,7 @@ const incomeSchema = new Schema(
           if (v === undefined || v === null || v === '') return true;
           if (typeof v !== 'string' || !/^\d+(\.\d+)?$/.test(v)) return false;
           const num = Number(v);
-          return num >= 0 && num <= 150000;
+          return num >= 0 && num <= 180000;
         },
         message:
           'Must be a valid number from 0 to 150000 with no special characters',

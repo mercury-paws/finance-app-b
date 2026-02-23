@@ -45,10 +45,10 @@ export const spentUpdateSchema = Joi.object({
 
 export const incomeUpdateSchema = Joi.object({
   income: Joi.string()
-    .pattern(/^(100000|[1-9]\d{0,4}|0)$/)
+    .pattern(/^(170000|[1-9]\d{0,4}|0)$/)
     .required()
     .messages({
-      'string.pattern.base': 'should be of the following format: 0-100000',
+      'string.pattern.base': 'should be of the following format: 0-170000',
       'any.required': 'is required',
     }),
   note: Joi.string().pattern(stringRegexp).required().messages({
@@ -58,10 +58,10 @@ export const incomeUpdateSchema = Joi.object({
 
 export const incomeAddSchema = Joi.object({
   income: Joi.string()
-    .pattern(/^(100000|[1-9]\d{0,4}|0)$/)
+    .pattern(/^(170000|[1-9]\d{0,4}|0)$/)
     .required()
     .messages({
-      'string.pattern.base': 'should be of the following format: 0-50000',
+      'string.pattern.base': 'should be of the following format: 0-170000',
       'any.required': 'is required',
     }),
   note: Joi.string().pattern(stringRegexp).required().messages({
