@@ -58,7 +58,7 @@ export const incomeUpdateSchema = Joi.object({
 
 export const incomeAddSchema = Joi.object({
   income: Joi.string()
-    .pattern(/^(170000|[1-9]\d{0,4}|0)$/)
+    .pattern(/^(170000|[1-9]\d{0,5}|0)$/)
     .required()
     .messages({
       'string.pattern.base': 'should be of the following format: 0-170000',
